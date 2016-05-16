@@ -122,7 +122,7 @@ namespace MefContrib.Hosting.Interception.Tests
 
             var parts = container.GetExportedValues<IPart>();
             Assert.AreEqual(1, parts.Count());
-            Assert.IsNotInstanceOfType(parts.First(), typeof(Part0));
+            Assert.IsInstanceOfType(parts.First(), typeof(Part0));
         }
 
         [TestMethod]
