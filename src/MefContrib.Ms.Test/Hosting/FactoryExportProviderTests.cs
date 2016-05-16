@@ -1,11 +1,13 @@
-using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace MefContrib.Hosting.Tests
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Reflection;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class FactoryExportProviderTests
     {

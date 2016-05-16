@@ -1,4 +1,5 @@
-﻿
+﻿using MefContrib.Hosting.;
+
 
 namespace MefContrib.Integration.Autofac.Ms.Tests
 {
@@ -7,7 +8,6 @@ namespace MefContrib.Integration.Autofac.Ms.Tests
     using System;
     using System.ComponentModel.Composition;
     using MefContrib.Containers;
-    using static Hosting.Tests.FactoryExportProviderTests;
     public interface IAutofacComponent
     {
         IMefComponent MefComponent { get; }
@@ -149,4 +149,4 @@ namespace MefContrib.Integration.Autofac.Ms.Tests
 
         public IMefComponent MefComponent { get; set; }
     }
-} 
+}
