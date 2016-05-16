@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6DE77D0D-028B-4D05-8A3C-2BD2C01D4F0C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MefContrib.Test</RootNamespace>
+    <AssemblyName>MefContrib.Ms.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="CompositionServicesTests.cs" />
+    <Compile Include="Hosting\Conventions\AggregatedTypeScannerTests.cs" />
+    <Compile Include="Hosting\Conventions\AppDomainPartRegistryLocatorTests.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyFactory.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyTypeScannerTests.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyWrapper.cs" />
+    <Compile Include="Hosting\Conventions\Catch.cs" />
+    <Compile Include="Hosting\Conventions\ConfigurationPartRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\ContextSpecificationAssertions.cs" />
+    <Compile Include="Hosting\Conventions\ConventionPartCreatorTests.cs" />
+    <Compile Include="Hosting\Conventions\ConventionsCatalogTests.cs" />
+    <Compile Include="Hosting\Conventions\CSharpAssemblyFactory.cs" />
+    <Compile Include="Hosting\Conventions\CSharpAssemblyFactoryTests.cs" />
+    <Compile Include="Hosting\Conventions\DefaultContractService.cs" />
+    <Compile Include="Hosting\Conventions\DefaultConventionContractServiceTests.cs" />
+    <Compile Include="Hosting\Conventions\DirectoryTypeScannerTests.cs" />
+    <Compile Include="Hosting\Conventions\ExportConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\ExportConventionTests.cs" />
+    <Compile Include="Hosting\Conventions\ExportRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\FakeConventionRegistry.cs" />
+    <Compile Include="Hosting\Conventions\FakeExportConvention.cs" />
+    <Compile Include="Hosting\Conventions\FakeImportConvetion.cs" />
+    <Compile Include="Hosting\Conventions\FakePart.cs" />
+    <Compile Include="Hosting\Conventions\FakePartConvention.cs" />
+    <Compile Include="Hosting\Conventions\IConventionRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\IFakeInterface.cs" />
+    <Compile Include="Hosting\Conventions\IFakeMetadataView.cs" />
+    <Compile Include="Hosting\Conventions\ImportConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\ImportConventionTests.cs" />
+    <Compile Include="Hosting\Conventions\ImportRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\Integration\ConfigurationPartRegistryIntegrationTests.cs" />
+    <Compile Include="Hosting\Conventions\Integration\IntegrationFakeParts.cs" />
+    <Compile Include="Hosting\Conventions\Integration\IntegrationTests.cs" />
+    <Compile Include="Hosting\Conventions\Integration\XmlConfigurationFakeParts.cs" />
+    <Compile Include="Hosting\Conventions\IPartRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\MefIntegrationTests.cs" />
+    <Compile Include="Hosting\Conventions\MetadataItemTests.cs" />
+    <Compile Include="Hosting\Conventions\PartConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\PartConventionTests.cs" />
+    <Compile Include="Hosting\Conventions\PartRegistryLocatorTests.cs" />
+    <Compile Include="Hosting\Conventions\PartRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\ReflectionServices.cs" />
+    <Compile Include="Hosting\Conventions\RequiredMetadataItemTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeDefaultConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeDefaultConventionConfiguratorTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeExtensionsTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeScannerConfiguratorTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeScannerTests.cs" />
+    <Compile Include="Hosting\FactoryExportDefinitionTests.cs" />
+    <Compile Include="Hosting\FactoryExportProviderTests.cs" />
+    <Compile Include="Hosting\Filter\FilteringCatalogTests.cs" />
+    <Compile Include="Hosting\Generics\ConcreteRepository.cs" />
+    <Compile Include="Hosting\Generics\GenericCatalogTests.cs" />
+    <Compile Include="Hosting\Generics\GenericContractTypeMappingTests.cs" />
+    <Compile Include="Hosting\Generics\GenericExportHandlerIntegrationTests.cs" />
+    <Compile Include="Hosting\Generics\GenericExportHandlerTests.cs" />
+    <Compile Include="Hosting\Generics\GenericTypeCatalogTests.cs" />
+    <Compile Include="Hosting\Generics\IRepository.cs" />
+    <Compile Include="Hosting\Generics\Order.cs" />
+    <Compile Include="Hosting\Generics\Repository.cs" />
+    <Compile Include="Hosting\Generics\TypeHelperTests.cs" />
+    <Compile Include="Hosting\Interception\CompositeValueInterceptorTests.cs" />
+    <Compile Include="Hosting\Interception\Configuration\InterceptionConfigurationTests.cs" />
+    <Compile Include="Hosting\Interception\Configuration\PredicateInterceptionCriteriaTests.cs" />
+    <Compile Include="Hosting\Interception\FakeHandlers.cs" />
+    <Compile Include="Hosting\Interception\FakeInterceptor.cs" />
+    <Compile Include="Hosting\Interception\FakeParts.cs" />
+    <Compile Include="Hosting\Interception\Handlers\ConcreteTypeExportHandlerTests.cs" />
+    <Compile Include="Hosting\Interception\InterceptingCatalogTests.cs" />
+    <Compile Include="Hosting\Interception\InterceptingComposablePartDefinitionTests.cs" />
+    <Compile Include="Hosting\Interception\InterceptingComposablePartTests.cs" />
+    <Compile Include="Hosting\Interception\Logger.cs" />
+    <Compile Include="Hosting\Interception\OrderProcessor.cs" />
+    <Compile Include="Hosting\Interception\RecompositionTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShouldExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MefContrib\MefContrib.csproj">
+      <Project>{0cce812a-f4eb-4379-b820-d8ada4330235}</Project>
+      <Name>MefContrib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -29,12 +29,12 @@
             container = new CompositionContainer(catalog);
         }
 
-        [Test]
-        public void When_setting_name_on_the_customer_it_should_error()
-        {
-            var customer = container.GetExportedValue<ICustomer>();
-            typeof(InvalidOperationException).ShouldBeThrownBy(() => { customer.Name = "John Doe"; });
-        }
+            [Test]
+            public void When_setting_name_on_the_customer_it_should_error()
+            {
+                var customer = container.GetExportedValue<ICustomer>();
+                typeof(InvalidOperationException).ShouldBeThrownBy(() => { customer.Name = "John Doe"; });
+            }
     }
 
     [Export(typeof(ICustomer))]

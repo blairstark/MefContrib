@@ -4,10 +4,9 @@
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using global::Castle.DynamicProxy;
-    using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Tests;
     using NUnit.Framework;
-
+    using Configuration;
     [TestFixture]
     public class DynamicProxyValueInterceptorTests
     {
