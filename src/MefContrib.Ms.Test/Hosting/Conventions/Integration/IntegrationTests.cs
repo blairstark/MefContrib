@@ -67,7 +67,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         [TestMethod]
         public void ConventionCatalog_should_support_property_exports()
         {
-            var registry = ();
+            var registry = new PartRegistry();
             registry.TypeScanner = new AssemblyTypeScanner(Assembly.GetExecutingAssembly());
 
             registry

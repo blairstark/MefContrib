@@ -1,5 +1,4 @@
-﻿using MefContrib.Hosting.;
-
+﻿
 
 namespace MefContrib.Integration.Autofac.Ms.Tests
 {
