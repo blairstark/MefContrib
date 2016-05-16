@@ -24,7 +24,7 @@ namespace MefContrib.Hosting.Generics.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Passing_null_to_the_ctor_causes_an_exception1()
         {
             new GenericTypeCatalog(null);

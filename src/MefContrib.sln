@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Integration.Auto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Integration.Unity.Ms.Tests", "MefContrib.Integration.Unity.Ms.Tests\MefContrib.Integration.Unity.Ms.Tests.csproj", "{356F9C9E-7C3F-4907-8700-5BF0358A1ABF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Ms.Test", "MefContrib.Ms.Test\MefContrib.Ms.Test.csproj", "{6DE77D0D-028B-4D05-8A3C-2BD2C01D4F0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Ms.Tests", "MefContrib.Ms.Tests\MefContrib.Ms.Tests.csproj", "{6DE77D0D-028B-4D05-8A3C-2BD2C01D4F0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

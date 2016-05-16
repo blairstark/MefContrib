@@ -23,7 +23,7 @@ namespace MefContrib.Hosting.Generics.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void When_building_a_closed_generic_repository_and_no_implementations_are_present_ArgumentException_is_thrown()
         {
             var importDefinitionType = typeof(IRepository<Order>);

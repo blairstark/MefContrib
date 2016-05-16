@@ -59,8 +59,8 @@ namespace MefContrib.Hosting.Interception.Tests
             // Recompose
             aggregateCatalog.Catalogs.Add(new TypeCatalog(typeof(RecomposablePart2)));
 
-            Assert.AreEqual(1, changingEventInvokeCount);
-            Assert.AreEqual(1, changedEventInvokeCount);
+            Assert.AreEqual(1U, changingEventInvokeCount);
+            Assert.AreEqual(1U, changedEventInvokeCount);
         }
 
         [TestMethod]
@@ -110,8 +110,11 @@ namespace MefContrib.Hosting.Interception.Tests
             // Recompose
             aggregateCatalog.Catalogs.Remove(innerCatalog2);
 
-            Assert.AreEqual(1, changingEventInvokeCount);
-            Assert.AreEqual(1, changedEventInvokeCount);
+            Assert.AreEqual(1U, changingEventInvokeCount);
+            Assert.AreEqual(1U, changedEventInvokeCount);
+
+           
+
         }
 
         [TestMethod]

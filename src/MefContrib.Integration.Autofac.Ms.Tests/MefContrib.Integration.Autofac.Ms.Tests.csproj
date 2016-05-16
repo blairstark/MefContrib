@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MefContrib.Integration.Autofac.Tests</RootNamespace>
-    <AssemblyName>MefContrib.Integration.Autofac.Ms.Tests</AssemblyName>
+    <AssemblyName>MefContrib.Integration.Autofac.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -73,9 +73,9 @@
       <Project>{95de4cd7-ea05-4ee0-9bd2-04cdf1c08520}</Project>
       <Name>MefContrib.Integration.Autofac</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MefContrib.Ms.Test\MefContrib.Ms.Test.csproj">
+    <ProjectReference Include="..\MefContrib.Ms.Tests\MefContrib.Ms.Tests.csproj">
       <Project>{6de77d0d-028b-4d05-8a3c-2bd2c01d4f0c}</Project>
-      <Name>MefContrib.Ms.Test</Name>
+      <Name>MefContrib.Ms.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\MefContrib\MefContrib.csproj">
       <Project>{0cce812a-f4eb-4379-b820-d8ada4330235}</Project>
