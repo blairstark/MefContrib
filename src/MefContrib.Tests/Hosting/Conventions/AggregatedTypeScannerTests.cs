@@ -7,11 +7,11 @@ namespace MefContrib.Hosting.Conventions.Tests
     using MefContrib.Tests;
 
     using Moq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class AggregatedTypeScannerTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argument_null_exception_when_called_with_null_param_array()
         {
             var exception =
@@ -20,7 +20,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argument_null_exception_when_called_with_null_enumerable()
         {
             var exception =
@@ -29,7 +29,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_evaluate_predicate_on_all_aggregated_type_scanners()
         {
             var firstScanner =
@@ -49,7 +49,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             secondScanner.Verify();
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_return_types_from_all_scanners_that_match_the_predicate()
         {
             var firstScanner =
@@ -71,7 +71,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.Count().ShouldEqual(3);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_return_distinct_types()
         {
             var scanner =
@@ -86,7 +86,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Add_should_throw_argumentnullexception_when_called_with_null()
         {
             var scanner =
@@ -98,7 +98,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Add_should_add_type_scanner_to_collection_of_scanners_that_are_queried_by_gettypes()
         {
             var scanner =

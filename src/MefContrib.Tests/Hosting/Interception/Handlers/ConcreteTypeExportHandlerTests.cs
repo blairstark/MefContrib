@@ -7,17 +7,17 @@ using System.ComponentModel.Composition.ReflectionModel;
 using System.Linq;
 using MefContrib.Hosting.Interception.Handlers;
 using MefContrib.Tests;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
-    [TestFixture]
+    [TestClass]
     public class ConcreteTypeExportHandlerTests
     {
-        public ConcreteTypeExportHandler ConcreteTypeHandler;
-        public ImportDefinition RepositoryImportDefinition;
+        public static ConcreteTypeExportHandler ConcreteTypeHandler;
+        public static ImportDefinition RepositoryImportDefinition;
 
-        [Test]
+        [TestMethod]
         public void When_querying_using_a_concrete_order_repository_the_order_repository_part_is_created()
         {
             var exports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
@@ -26,8 +26,8 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
             partType.ShouldBeOfType<CustomerRepository>();
         }
 
-        [TestFixtureSetUp]
-        public void TestSetUp()
+        [ClassInitialize]
+        public static void TestSetUp(TestContext context)
         {
             ConcreteTypeHandler = new ConcreteTypeExportHandler();
             var typeCatalog = new TypeCatalog(typeof(CustomerProcessor));

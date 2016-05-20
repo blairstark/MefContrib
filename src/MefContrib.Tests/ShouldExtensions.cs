@@ -4,13 +4,13 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public static class ShouldAssertExtensions
     {
         public static void ShouldMatch<T>(this T actual, Func<T, bool> condition)
         {
-            Assert.True(condition.Invoke(actual));
+            Assert.IsTrue(condition.Invoke(actual));
         }
 
         public static void ShouldImplementInterface<T>(this Type actual)
@@ -18,7 +18,7 @@
             var found =
                 actual.GetInterfaces().Contains(typeof(T));
 
-            Assert.True(found);
+            Assert.IsTrue(found);
         }
 
         public static void ShouldContainType<T>(this IEnumerable collection)
@@ -28,7 +28,7 @@
                 where c.GetType().IsAssignableFrom(typeof(T))
                 select c;
 
-            Assert.True(selection.Count() > 0);
+            Assert.IsTrue(selection.Count() > 0);
         }
 
         public static void ShouldHaveCount<T>(this IList<T> list, int expected)
@@ -38,12 +38,12 @@
 
         public static void ShouldBeTrue(this bool actual)
         {
-            Assert.True(actual);
+            Assert.IsTrue(actual);
         }
 
         public static void ShouldBeFalse(this bool actual)
         {
-            Assert.False(actual);
+            Assert.IsFalse(actual);
         }
 
         public static void ShouldEqual(this object actual, object expected)
@@ -53,7 +53,7 @@
 
         public static void ShouldBeGreaterThan(this int actual, int smallestValueNotAccepted)
         {
-            Assert.Greater(actual, smallestValueNotAccepted);
+            Assert.IsTrue(actual > smallestValueNotAccepted);
         }
 
         public static void ShouldNotEqual(this object actual, object expected)
@@ -73,17 +73,17 @@
 
         public static void ShouldBeNull(this object actual)
         {
-            Assert.Null(actual);
+            Assert.IsNull(actual);
         }
 
         public static void ShouldNotBeNull(this object actual)
         {
-            Assert.NotNull(actual);
+            Assert.IsNotNull(actual);
         }
 
         public static void ShouldBeOfType<T>(this Type asserted)
         {
-            Assert.True(asserted == typeof(T));
+            Assert.IsTrue(asserted == typeof(T));
         }
 
         public static void ShouldBeOfType<T>(this object asserted)
@@ -93,14 +93,14 @@
 
         public static void ShouldBeOfType(this object asserted, Type expected)
         {
-            Assert.IsInstanceOf(expected, asserted);
+            Assert.IsInstanceOfType(asserted, expected);
         }
 
         public static void ShouldNotBeOfType<T>(this object assertedType)
         {
             if (assertedType != null)
             {
-                Assert.IsNotInstanceOf(typeof(T), assertedType);
+                Assert.IsNotInstanceOfType(assertedType, typeof(T));
             }
         }
 

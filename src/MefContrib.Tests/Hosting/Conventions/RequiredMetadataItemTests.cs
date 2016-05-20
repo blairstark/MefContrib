@@ -4,12 +4,12 @@ namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
     using System.Collections.Generic;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class RequiredMetadataItemTests
     {
-        [Test]
+        [TestMethod]
         public void Implicit_cast_to_keyvaluepair_of_string_type_should_set_value_property_to_value_of_type_property()
         {
             var instance =
@@ -20,7 +20,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             pair.Value.ShouldEqual(instance.Type);
         }
 
-        [Test]
+        [TestMethod]
         public void Implicit_cast_to_keyvaluepair_of_string_type_should_set_key_property_to_value_of_name_property()
         {
             var instance =
@@ -31,7 +31,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             pair.Key.ShouldEqual(instance.Name);
         }
 
-        [Test]
+        [TestMethod]
         public void Implicit_cast_to_keyvaluepair_of_string_type_should_not_throw_exception()
         {
             var instance =
@@ -45,7 +45,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_true_if_identical_to_instance_being_compared_against()
         {
             var instance =
@@ -57,7 +57,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_name_is_not_identical_to_instance_being_compared_against()
         {
             var instance =
@@ -69,7 +69,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_type_is_not_identical_to_instance_being_compared_against()
         {
             var instance =

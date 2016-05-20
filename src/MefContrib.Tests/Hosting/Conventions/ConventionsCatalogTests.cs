@@ -9,13 +9,13 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
     using Moq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MefContrib.Tests;
 
-    [TestFixture]
+    [TestClass]
     public class ConventionsCatalogTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_is_called_with_null_params_array_of_registries()
         {
             var exception =
@@ -24,7 +24,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_retrieve_registries_when_called_with_locator()
         {
             var locator = new Mock<IPartRegistryLocator>();
@@ -35,7 +35,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             locator.Verify(x => x.GetRegistries(), Times.Once());
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_return_compsable_part_definitions_that_was_created_based_on_the_part_registries()
         {
             var catalog =
@@ -44,7 +44,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             catalog.Parts.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_return_empty_result_when_registry_has_no_type_loader_defined()
         {
             var partDefinitions =
@@ -53,7 +53,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             partDefinitions.Count().ShouldEqual(0);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_return_empty_result_when_registry_has_no_part_definitions_defined()
         {
             var partDefinitions =
@@ -62,7 +62,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             partDefinitions.Count().ShouldEqual(0);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_return_one_part_definition_per_type_matched_by_convention_conditions()
         {
             var partDefinitions =
@@ -71,7 +71,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             partDefinitions.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_return_definition_with_correct_type()
         {
             var partDefinitions =
@@ -83,7 +83,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             partType.Value.Equals(typeof(FakePart));
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_add_metadata_about_creation_policy_from_part_convention_to_part_definition()
         {
             var partDefinitions =
@@ -95,7 +95,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             partDefinitions.First().Metadata.ContainsKey(expectedMetadataKey).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_add_metadata_from_part_convention_to_part_definition()
         {
             var partDefinitions =
@@ -114,7 +114,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             expectedMetadata.All(x => inspectedPartDefinition.Metadata.ContainsKey(x.Key)).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_create_correct_number_of_export_definitions_from_part_convention_on_part_definition()
         {
             var partDefinitions =
@@ -126,7 +126,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedPartDefinition.ExportDefinitions.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_contract_name_on_export_definition_to_contract_name_from_export_convention_using_contract_service_that_is_defined_on_registry()
         {
             var registry =
@@ -150,7 +150,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedExportDefinition.ContractName.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_metadata_on_export_definition_from_metadata_on_export_convention()
         {
             var registry =
@@ -173,7 +173,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 new KeyValuePair<string, object>(x.Name, x.Value))).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_type_identity_metadata_on_export_definition_to_contract_type_from_export_convention_using_contract_service_that_is_defined_on_registry()
         {
             var registry =
@@ -198,7 +198,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedExportDefinition.Metadata.Contains(expectedMetadata).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_create_correct_number_of_import_definitions_from_part_convention_on_part_definition()
         {
             var partDefinitions =
@@ -210,7 +210,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedPartDefinition.ExportDefinitions.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_cardinality_on_import_definition_to_zeroorone_when_import_convention_is_defined_for_non_collection_and_allow_default_values()
         {
             var partDefinitions =
@@ -222,7 +222,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.Cardinality.ShouldEqual(ImportCardinality.ZeroOrOne);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_cardinality_on_import_definition_to_exactlyone_when_import_convention_is_defined_for_non_collection_and_not_allow_default_values()
         {
             var partDefinitions =
@@ -234,7 +234,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.Cardinality.ShouldEqual(ImportCardinality.ExactlyOne);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_cardinality_on_import_definition_to_zeroormore_when_import_convention_is_for_collection()
         {
             var partDefinitions =
@@ -246,7 +246,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.Cardinality.ShouldEqual(ImportCardinality.ZeroOrMore);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_contract_name_on_import_definition_to_contract_name_from_import_convention_using_contract_service_that_is_defined_on_registry()
         {
             var registry =
@@ -270,7 +270,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.ContractName.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_type_identity_on_import_deinition_to_contract_type_from_import_convention()
         {
             var registry =
@@ -294,7 +294,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.RequiredTypeIdentity.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_required_metadata_on_import_definition_to_required_metadata_on_import_convention()
         {
             var registry =
@@ -316,7 +316,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 expectedRequiredMetadata.Contains(new RequiredMetadataItem(x.Key, x.Value)));
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_isrecomposable_on_import_definition_to_recomposable_on_import_definition()
         {
             var partDefinitions =
@@ -328,7 +328,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.IsRecomposable.ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_return_same_number_import_definitions_as_parameters_when_called_with_constructor()
         {
             var partDefinitions =
@@ -340,7 +340,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedPartDefinition.ImportDefinitions.Count().ShouldEqual(5);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_contract_name_on_import_deinfintion_to_contract_name_of_parameter_when_called_with_constructor()
         {
             var registry =
@@ -364,7 +364,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.ContractName.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_type_identity_on_import_deinfintion_to_contract_type_of_parameter_when_called_with_constructor()
         {
             var registry =
@@ -388,7 +388,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.ContractName.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_not_set_required_metadata_on_import_convention_when_called_with_constructor_info()
         {
             var partDefinitions =
@@ -400,7 +400,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.RequiredMetadata.ShouldBeSameAs(Enumerable.Empty<KeyValuePair<string, Type>>());
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_cardinality_on_import_defintion_to_exaclyone_when_import_convention_not_is_for_collection_and_called_with_constructor_info()
         {
             var partDefinitions =
@@ -412,7 +412,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.Cardinality.ShouldEqual(ImportCardinality.ExactlyOne);
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_should_set_cardinality_on_import_defintion_to_zeroormore_when_import_convention_not_is_for_collection_and_called_with_constructor_info()
         {
             var partDefinitions =

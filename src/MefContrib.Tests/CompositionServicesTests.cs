@@ -5,50 +5,51 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using MefContrib.Hosting.Generics.Tests;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class CompositionServicesTests : CompositionServicesContext
     {
-        [Test]
+        [TestMethod]
         public void When_retrieving_import_definition_type_for_constructor_import_import_1_DummyImport1_is_returned()
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport1)));
             Assert.AreEqual(typeof(IDummyImport1), ContractServices.GetImportDefinitionType(ImportDefinition));
         }
 
-        [Test]
+        [TestMethod]
         public void When_retrieving_import_definition_type_for_property_import_import_2_DummyImport2_is_returned()
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport2)));
             Assert.AreEqual(typeof(IDummyImport2), ContractServices.GetImportDefinitionType(ImportDefinition));
         }
 
-        [Test]
+        [TestMethod]
         public void When_retrieving_import_definition_typoe_for_field_import_import_3_DummyImport3_is_returned()
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport3)));
             Assert.AreEqual(typeof(IDummyImport3), ContractServices.GetImportDefinitionType(ImportDefinition));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
         public void Calling_GetImportDefinitionType_with_null_importDefinition_throws_an_exception()
         {
-            Assert.That(delegate
-            {
-                ContractServices.GetImportDefinitionType(null);
-            }, Throws.TypeOf<ArgumentNullException>());
+            ContractServices.GetImportDefinitionType(null);
+
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
         public void Calling_IsReflectionImportDefinition_with_null_importDefinition_throws_an_exception()
         {
-            Assert.That(delegate
-            {
-                ContractServices.IsReflectionImportDefinition(null);
-            }, Throws.TypeOf<ArgumentNullException>());
+
+            ContractServices.IsReflectionImportDefinition(null);
+
         }
     }
 

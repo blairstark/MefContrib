@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Generics.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class TypeHelperTests
     {
-        [Test]
+        [TestMethod]
         public void When_building_a_closed_generic_repository_Order_repository_is_returned()
         {
             var importDefinitionType = typeof(IRepository<Order>);
@@ -22,63 +22,60 @@ namespace MefContrib.Hosting.Generics.Tests
             Assert.AreEqual(typeof(Repository<Order>), orderRepositoryTypes.Single());
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void When_building_a_closed_generic_repository_and_no_implementations_are_present_ArgumentException_is_thrown()
         {
             var importDefinitionType = typeof(IRepository<Order>);
             var implementations = new List<Type>();
-            
-            Assert.That(() =>
-            {
-                TypeHelper.BuildGenericTypes(importDefinitionType, implementations);
-            }, Throws.InstanceOf<ArgumentException>());
+            TypeHelper.BuildGenericTypes(importDefinitionType, implementations);
         }
 
-        [Test]
+        [TestMethod]
         public void IsCollection_method_test()
         {
-            Assert.That(TypeHelper.IsCollection(typeof(int)), Is.False);
-            Assert.That(TypeHelper.IsCollection(typeof(string)), Is.False);
-            Assert.That(TypeHelper.IsCollection(typeof(IEnumerable)), Is.True);
-            Assert.That(TypeHelper.IsCollection(typeof(IEnumerable<string>)), Is.True);
+            Assert.IsFalse(TypeHelper.IsCollection(typeof(int)));
+            Assert.IsFalse(TypeHelper.IsCollection(typeof(string)));
+            Assert.IsTrue(TypeHelper.IsCollection(typeof(IEnumerable)));
+            Assert.IsTrue(TypeHelper.IsCollection(typeof(IEnumerable<string>)));
         }
 
-        [Test]
+        [TestMethod]
         public void IsGenericCollection_method_test()
         {
-            Assert.That(TypeHelper.IsGenericCollection(typeof(int)), Is.False);
-            Assert.That(TypeHelper.IsGenericCollection(typeof(string)), Is.False);
-            Assert.That(TypeHelper.IsGenericCollection(typeof(IEnumerable)), Is.False);
-            Assert.That(TypeHelper.IsGenericCollection(typeof(IEnumerable<string>)), Is.True);
-            Assert.That(TypeHelper.IsGenericCollection(typeof(MyClass)), Is.True);
+            Assert.IsFalse(TypeHelper.IsGenericCollection(typeof(int)));
+            Assert.IsFalse(TypeHelper.IsGenericCollection(typeof(string)));
+            Assert.IsFalse(TypeHelper.IsGenericCollection(typeof(IEnumerable)));
+            Assert.IsTrue(TypeHelper.IsGenericCollection(typeof(IEnumerable<string>)));
+            Assert.IsTrue(TypeHelper.IsGenericCollection(typeof(MyClass)));
         }
 
-        [Test]
+        [TestMethod]
         public void TryGetAncestor_method_test()
         {
             var ancestor = TypeHelper.TryGetAncestor(typeof(IList<string>), typeof(IEnumerable<string>));
-            Assert.That(ancestor, Is.Not.Null);
-            Assert.That(ancestor.GetGenericArguments()[0], Is.EqualTo(typeof(string)));
+            Assert.IsNotNull(ancestor);
+            Assert.AreEqual(typeof(string), ancestor.GetGenericArguments()[0]);
         }
 
-        [Test]
+        [TestMethod]
         public void TryGetAncestor_method_test_with_open_generics()
         {
             var ancestor = TypeHelper.TryGetAncestor(typeof(IList<string>), typeof(IEnumerable<>));
-            Assert.That(ancestor, Is.Not.Null);
-            Assert.That(ancestor.GetGenericArguments()[0], Is.EqualTo(typeof(string)));
+            Assert.IsNotNull(ancestor);
+            Assert.AreEqual(typeof(string), ancestor.GetGenericArguments()[0]);
         }
 
-        [Test]
+        [TestMethod]
         public void GetGenericCollectionParameter_method_test()
         {
             var ancestor = TypeHelper.GetGenericCollectionParameter(typeof(MyClass));
-            Assert.That(ancestor, Is.Not.Null);
-            Assert.That(ancestor, Is.EqualTo(typeof(string)));
+            Assert.IsNotNull(ancestor);
+            Assert.AreEqual(typeof(string), ancestor);
 
             ancestor = TypeHelper.GetGenericCollectionParameter(typeof(MyClass2));
-            Assert.That(ancestor, Is.Not.Null);
-            Assert.That(ancestor, Is.EqualTo(typeof(string)));
+            Assert.IsNotNull(ancestor);
+            Assert.AreEqual(typeof(string), ancestor);
         }
 
         private class MyClass : List<string> { }

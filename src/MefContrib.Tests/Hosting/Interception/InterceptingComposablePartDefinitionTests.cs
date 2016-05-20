@@ -5,70 +5,65 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using MefContrib.Tests;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class InterceptingComposablePartDefinitionTests
     {
         private ComposablePartDefinition interceptedPartDefinition;
         private InterceptingComposablePartDefinition interceptingPartDefinition;
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetUp()
         {
             var mockInterceptor = new Mock<IExportedValueInterceptor>();
-            interceptedPartDefinition = AttributedModelServices.CreatePartDefinition(typeof(OrderProcessor), null);    
+            interceptedPartDefinition = AttributedModelServices.CreatePartDefinition(typeof(OrderProcessor), null);
             interceptingPartDefinition = new InterceptingComposablePartDefinition(interceptedPartDefinition, mockInterceptor.Object);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_should_throw_argument_null_exception_if_called_with_null_composable_part_definition()
         {
-            Assert.That(delegate
-            {
-                new InterceptingComposablePartDefinition(null, new FakeInterceptor());
-            }, Throws.TypeOf<ArgumentNullException>());
+            new InterceptingComposablePartDefinition(null, new FakeInterceptor());
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_should_throw_argument_null_exception_if_called_with_null_interceptor()
         {
-            var partDefinition = new TypeCatalog(typeof (Part1)).Parts.First();
-            Assert.That(delegate
-            {
-
-                new InterceptingComposablePartDefinition(partDefinition, null);
-            }, Throws.TypeOf<ArgumentNullException>());
+            var partDefinition = new TypeCatalog(typeof(Part1)).Parts.First();
+            new InterceptingComposablePartDefinition(partDefinition, null);
         }
 
-        [Test]
+        [TestMethod]
         public void When_accessing_import_definitions_it_should_pull_from_the_inner_part_definition()
         {
             interceptingPartDefinition.ImportDefinitions.ShouldEqual(interceptedPartDefinition.ImportDefinitions);
         }
 
-        [Test]
+        [TestMethod]
         public void When_accessing_export_definitions_it_should_pull_from_the_inner_part_definition()
         {
             interceptingPartDefinition.ExportDefinitions.ShouldEqual(interceptedPartDefinition.ExportDefinitions);
         }
 
-        [Test]
+        [TestMethod]
         public void When_accessing_metadat_it_should_pull_from_the_inner_part_definition()
         {
             interceptingPartDefinition.Metadata.ShouldEqual(interceptedPartDefinition.Metadata);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_create_part_it_should_create_an_intercepting_part()
         {
             var part = interceptingPartDefinition.CreatePart();
             part.ShouldBeOfType<InterceptingComposablePart>();
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_create_part_it_should_create_a_disposable_intercepting_part()
         {
             var mockInterceptor = new Mock<IExportedValueInterceptor>();

@@ -3,12 +3,12 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class IPartRegistryTests
     {
-        [Test]
+        [TestMethod]
         public void IPartRegistry_should_implement_ihideobjectmemebers_interface()
         {
             typeof(IPartRegistry<IContractService>).ShouldImplementInterface<IHideObjectMembers>();

@@ -3,12 +3,12 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class IConventionRegistryTests
     {
-        [Test]
+        [TestMethod]
         public void IConventionRegistry_should_implement_ihideobjectmemebers_interface()
         {
             typeof(IConventionRegistry<>).ShouldImplementInterface<IHideObjectMembers>();

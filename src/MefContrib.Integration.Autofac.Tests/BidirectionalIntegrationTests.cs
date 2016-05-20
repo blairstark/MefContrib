@@ -12,9 +12,9 @@ namespace MefContrib.Integration.Autofac.Tests
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
     using global::Autofac;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class BidirectionalIntegrationTests
     {
         public class MefSingletonComponent
@@ -35,7 +35,7 @@ namespace MefContrib.Integration.Autofac.Tests
             #endregion
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveAutofacComponentThatHasAutofacAndMefDependenciesTest()
         {
             // Setup
@@ -51,13 +51,13 @@ namespace MefContrib.Integration.Autofac.Tests
             // Test
             var container = builder.Build();
             var autofacMixedComponent = container.Resolve<AutofacMixedComponent>();
-            Assert.That(autofacMixedComponent, Is.Not.Null);
-            Assert.That(autofacMixedComponent.GetType(), Is.EqualTo(typeof (AutofacMixedComponent)));
-            Assert.That(autofacMixedComponent.MefComponent.GetType(), Is.EqualTo(typeof (MefComponent1)));
-            Assert.That(autofacMixedComponent.AutofacComponent.GetType(), Is.EqualTo(typeof (AutofacOnlyComponent1)));
+            Assert.IsNotNull(autofacMixedComponent);
+            Assert.IsInstanceOfType(autofacMixedComponent, typeof (AutofacMixedComponent));
+            Assert.IsInstanceOfType(autofacMixedComponent.MefComponent, typeof (MefComponent1));
+            Assert.IsInstanceOfType(autofacMixedComponent.AutofacComponent, typeof (AutofacOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentRegisteredUsingAddExportedValueTest()
         {
             MefSingletonComponent.Counter = 0;
@@ -78,15 +78,15 @@ namespace MefContrib.Integration.Autofac.Tests
             compositionContainer.Compose(batch);
 
             var singletonComponent1 = compositionContainer.GetExport<MefSingletonComponent>().Value;
-            Assert.That(MefSingletonComponent.Counter, Is.EqualTo(1));
-            Assert.That(singletonComponent1, Is.SameAs(singletonComponent));
+            Assert.AreEqual(1, MefSingletonComponent.Counter);
+            Assert.AreSame(singletonComponent1, singletonComponent);
 
             var singletonComponent2 = autofacContainer.Resolve<MefSingletonComponent>();
-            Assert.That(MefSingletonComponent.Counter, Is.EqualTo(1));
-            Assert.That(singletonComponent2, Is.SameAs(singletonComponent));
+            Assert.AreEqual(1, MefSingletonComponent.Counter);
+            Assert.AreSame(singletonComponent2, singletonComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentThatHasAutofacDependenciesTest()
         {
             // Setup
@@ -101,12 +101,12 @@ namespace MefContrib.Integration.Autofac.Tests
             // Test
             var container = builder.Build();
             var mefComponent = container.Resolve<IMefComponentWithAutofacDependencies>();
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.MefOnlyComponent.GetType(), Is.EqualTo(typeof (MefComponent1)));
-            Assert.That(mefComponent.AutofacOnlyComponent.GetType(), Is.EqualTo(typeof (AutofacOnlyComponent1)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.MefOnlyComponent, typeof (MefComponent1));
+            Assert.IsInstanceOfType(mefComponent.AutofacOnlyComponent, typeof (AutofacOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentThatHasAutofacDependenciesThatHaveMefDependenciesTest()
         {
             // Setup
@@ -122,19 +122,19 @@ namespace MefContrib.Integration.Autofac.Tests
             // Test
             var container = builder.Build();
             var mefComponent = container.ResolveNamed<IMefComponentWithAutofacDependencies>("component2");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.GetType(), Is.EqualTo(typeof (MefComponentWithAutofacDependencies2)));
-            Assert.That(mefComponent.MefOnlyComponent.GetType(), Is.EqualTo(typeof (MefComponent1)));
-            Assert.That(mefComponent.AutofacOnlyComponent.GetType(), Is.EqualTo(typeof (AutofacOnlyComponent1)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent, typeof (MefComponentWithAutofacDependencies2));
+            Assert.IsInstanceOfType(mefComponent.MefOnlyComponent, typeof (MefComponent1));
+            Assert.IsInstanceOfType(mefComponent.AutofacOnlyComponent,typeof (AutofacOnlyComponent1));
 
             var mefComponentWithAutofacDependencies2 = (MefComponentWithAutofacDependencies2) mefComponent;
-            Assert.That(mefComponentWithAutofacDependencies2.MixedAutofacMefComponent.GetType(),
-                        Is.EqualTo(typeof (AutofacComponent1)));
-            Assert.That(mefComponentWithAutofacDependencies2.MixedAutofacMefComponent.MefComponent.GetType(),
-                        Is.EqualTo(typeof (MefComponent1)));
+            Assert.IsInstanceOfType(mefComponentWithAutofacDependencies2.MixedAutofacMefComponent,
+                        typeof (AutofacComponent1));
+            Assert.IsInstanceOfType(mefComponentWithAutofacDependencies2.MixedAutofacMefComponent.MefComponent,
+                        typeof (MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCircularDependencyIsDetectedTest()
         {
             // Setup
@@ -149,10 +149,10 @@ namespace MefContrib.Integration.Autofac.Tests
             // Test
             var container = builder.Build();
             var autofacOnlyComponent1 = container.Resolve<AutofacOnlyComponent1>();
-            Assert.That(autofacOnlyComponent1, Is.Not.Null);
+            Assert.IsNotNull(autofacOnlyComponent1);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacContainerCanBeResolvedByMefTest()
         {
             // Setup
@@ -167,19 +167,19 @@ namespace MefContrib.Integration.Autofac.Tests
             var container = builder.Build();
             var compositionContainer1 = container.Resolve<CompositionContainer>();
             var compositionContainer2 = container.Resolve<CompositionContainer>();
-            Assert.That(compositionContainer1, Is.Not.Null);
-            Assert.That(compositionContainer2, Is.Not.Null);
-            Assert.That(compositionContainer1, Is.SameAs(compositionContainer2));
+            Assert.IsNotNull(compositionContainer1);
+            Assert.IsNotNull(compositionContainer2);
+            Assert.AreSame(compositionContainer1, compositionContainer2);
 
             var autofacContainerFromMef1 = compositionContainer1.GetExportedValue<ILifetimeScope>();
             var autofacContainerFromMef2 = compositionContainer1.GetExportedValue<ILifetimeScope>();
 
-            Assert.That(autofacContainerFromMef1, Is.Not.Null);
-            Assert.That(autofacContainerFromMef2, Is.Not.Null);
+            Assert.IsNotNull(autofacContainerFromMef1);
+            Assert.IsNotNull(autofacContainerFromMef2);
             Assert.AreSame(autofacContainerFromMef1, autofacContainerFromMef2);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacResolvesAutofacComponentRegisteredWithoutInterfaceTest()
         {
             // Setup
@@ -195,13 +195,13 @@ namespace MefContrib.Integration.Autofac.Tests
             builder.Register((c, p) => new AutofacComponent3(c.ResolveNamed<IMefComponent>("component2")));
             var container = builder.Build();
             var component2 = container.Resolve<AutofacComponent2>();
-            Assert.That(component2, Is.Not.Null);
-            Assert.That(component2.ImportedMefComponent, Is.Not.Null);
-            Assert.That(component2.ImportedMefComponent.GetType(), Is.EqualTo(typeof (MefComponent2)));
-            Assert.That(component2.MefComponent.GetType(), Is.EqualTo(typeof (MefComponent2)));
+            Assert.IsNotNull(component2);
+            Assert.IsNotNull(component2.ImportedMefComponent);
+            Assert.IsInstanceOfType(component2.ImportedMefComponent, typeof (MefComponent2));
+            Assert.IsInstanceOfType(component2.MefComponent, typeof (MefComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveMefComponentThatHasAutofacAndMefDependenciesTest()
         {
             // Setup
@@ -217,13 +217,13 @@ namespace MefContrib.Integration.Autofac.Tests
             var autofacContainer = builder.Build();
             var compositionContainer = autofacContainer.Resolve<CompositionContainer>();
             var mefMixedComponent = compositionContainer.GetExportedValue<MefMixedComponent>();
-            Assert.That(mefMixedComponent, Is.Not.Null);
-            Assert.That(mefMixedComponent.GetType(), Is.EqualTo(typeof (MefMixedComponent)));
-            Assert.That(mefMixedComponent.MefComponent.GetType(), Is.EqualTo(typeof (MefComponent1)));
-            Assert.That(mefMixedComponent.AutofacComponent.GetType(), Is.EqualTo(typeof (AutofacOnlyComponent1)));
+            Assert.IsNotNull(mefMixedComponent);
+            Assert.IsInstanceOfType(mefMixedComponent, typeof (MefMixedComponent));
+            Assert.IsInstanceOfType(mefMixedComponent.MefComponent, typeof (MefComponent1));
+            Assert.IsInstanceOfType(mefMixedComponent.AutofacComponent, typeof (AutofacOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void MefResolvesServiceRegisteredInAutofacByTypeTest()
         {
             // Setup
@@ -241,11 +241,11 @@ namespace MefContrib.Integration.Autofac.Tests
             var compositionContainer = autofacContainer.Resolve<CompositionContainer>();
             var fromMef = compositionContainer.GetExportedValue<IAutofacOnlyComponent>();
             var fromAutofac = autofacContainer.Resolve<IAutofacOnlyComponent>();
-            Assert.That(fromMef, Is.Not.Null);
-            Assert.That(fromMef.GetType(), Is.EqualTo(typeof (AutofacOnlyComponent1)));
-            Assert.That(fromAutofac, Is.Not.Null);
-            Assert.That(fromAutofac.GetType(), Is.EqualTo(typeof (AutofacOnlyComponent1)));
-            Assert.That(fromMef, Is.EqualTo(fromAutofac));
+            Assert.IsNotNull(fromMef);
+            Assert.IsInstanceOfType(fromMef, typeof (AutofacOnlyComponent1));
+            Assert.IsNotNull(fromAutofac);
+            Assert.IsInstanceOfType(fromAutofac, typeof (AutofacOnlyComponent1));
+            Assert.AreEqual(fromMef,fromAutofac);
         }
     }
 }

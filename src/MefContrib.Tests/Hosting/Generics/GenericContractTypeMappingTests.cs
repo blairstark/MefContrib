@@ -1,69 +1,61 @@
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Generics.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class GenericContractTypeMappingTests
     {
-        [Test]
+        [TestMethod]
         public void Generic_contract_type_mapping_is_sealed()
         {
-            Assert.That(typeof(GenericContractTypeMapping).IsSealed);
+            Assert.IsTrue(typeof(GenericContractTypeMapping).IsSealed);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Calling_ctor_with_null_generic_contract_type_definition_causes_argument_null_exception_to_be_thrown()
         {
-            Assert.That(delegate
-            {
-                new GenericContractTypeMapping(null, typeof(IRepository<>));
-            }, Throws.TypeOf<ArgumentNullException>());
+            new GenericContractTypeMapping(null, typeof(IRepository<>));
+
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
         public void Calling_ctor_with_null_generic_implementation_type_definition_causes_argument_null_exception_to_be_thrown()
         {
-            Assert.That(delegate
-            {
-                new GenericContractTypeMapping(typeof(IRepository<>), null);
-            }, Throws.TypeOf<ArgumentNullException>());
+            new GenericContractTypeMapping(typeof(IRepository<>), null); ;
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+
         public void Calling_ctor_with_non_generic_contract_type_definition_causes_argument_exception_to_be_thrown()
         {
-            Assert.That(delegate
-            {
-                new GenericContractTypeMapping(typeof(OrderProcessor), typeof(IRepository<>));
-            }, Throws.TypeOf<ArgumentException>());
+            new GenericContractTypeMapping(typeof(OrderProcessor), typeof(IRepository<>));
+
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void Calling_ctor_with_non_generic_implementation_type_definition_causes_argument_exception_to_be_thrown()
         {
-            Assert.That(delegate
-            {
-                new GenericContractTypeMapping(typeof(IRepository<>), typeof(OrderProcessor));
-            }, Throws.TypeOf<ArgumentException>());
+            new GenericContractTypeMapping(typeof(IRepository<>), typeof(OrderProcessor));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void Calling_ctor_with_closed_generic_contract_type_definition_causes_argument_exception_to_be_thrown()
         {
-            Assert.That(delegate
-            {
-                new GenericContractTypeMapping(typeof(IRepository<Order>), typeof(IRepository<>));
-            }, Throws.TypeOf<ArgumentException>());
+            new GenericContractTypeMapping(typeof(IRepository<Order>), typeof(IRepository<>));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void Calling_ctor_with_closed_generic_implementation_type_definition_causes_argument_exception_to_be_thrown()
         {
-            Assert.That(delegate
-            {
-                new GenericContractTypeMapping(typeof(IRepository<>), typeof(IRepository<Order>));
-            }, Throws.TypeOf<ArgumentException>());
+            new GenericContractTypeMapping(typeof(IRepository<>), typeof(IRepository<Order>));
         }
     }
 }

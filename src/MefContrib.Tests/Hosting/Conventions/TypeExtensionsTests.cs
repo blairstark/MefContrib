@@ -3,12 +3,12 @@
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System.Linq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class TypeExtensionsTests
     {
-        [Test]
+        [TestMethod]
         public void GetRequiredMetadata_should_return_metadata_items_for_public_non_readable_properties_on_interface()
         {
             var requiredMetadata =

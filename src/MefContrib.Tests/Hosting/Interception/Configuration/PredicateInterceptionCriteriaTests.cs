@@ -1,28 +1,24 @@
 using System;
 using MefContrib.Hosting.Interception.Configuration;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Interception.Tests.Configuration
 {
-    [TestFixture]
+    [TestClass]
     public class PredicateInterceptionCriteriaTests
     {
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void When_calling_ctor_with_null_interceptor_argument_null_exception_is_thrown()
         {
-            Assert.That(delegate
-            {
-                new PredicateInterceptionCriteria(null, def => true);
-            }, Throws.TypeOf<ArgumentNullException>());
+            new PredicateInterceptionCriteria(null, def => true);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void When_calling_ctor_with_null_predicate_argument_null_exception_is_thrown()
         {
-            Assert.That(delegate
-            {
-                new PredicateInterceptionCriteria(new FakeInterceptor(), null);
-            }, Throws.TypeOf<ArgumentNullException>());
+            new PredicateInterceptionCriteria(new FakeInterceptor(), null);
         }
     }
 }

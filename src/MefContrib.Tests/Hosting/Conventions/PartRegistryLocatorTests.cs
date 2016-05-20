@@ -5,12 +5,12 @@ namespace MefContrib.Hosting.Conventions.Tests
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
     using Moq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class PartRegistryLocatorTests
     {
-        [Test]
+        [TestMethod]
         public void Should_throw_argumentnullexception_when_instansiated_with_null()
         {
             // Arrange, Act
@@ -21,7 +21,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Should_return_instances_of_registry_types_returned_by_typescanners()
         {
             // Arrange
@@ -39,7 +39,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.ShouldContainType<FakePartRegistry>();
         }
 
-        [Test]
+        [TestMethod]
         public void Should_only_return_instances_of_registry_types_returned_by_typescanners_that_are_public()
         {
             // Arrange
@@ -59,7 +59,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_only_return_instances_of_registry_types_returned_by_typescanners_that_have_public_ctor()
         {
             // Arrange
@@ -79,7 +79,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_ignore_known_registries_that_has_no_typescanner_defined()
         {
             // Arrange
@@ -96,7 +96,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_return_combination_of_known_and_located_registries()
         {
             // Arrange
@@ -114,7 +114,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_ignore_non_registry_type_returned_by_typescanners()
         {
             // Arrange
@@ -134,7 +134,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_not_instantiate_same_registry_more_than_once_time()
         {
             // Arrange
@@ -150,7 +150,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             result.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_traverse_all_typescanners_until_no_more_registries_can_be_located()
         {
             // Arrange

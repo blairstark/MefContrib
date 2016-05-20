@@ -6,11 +6,11 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class TypeDefaultConventionConfiguratorTests
     {
-        [Test]
+        [TestMethod]
         public void ForType_should_not_return_null()
         {
             var configurator =
@@ -22,7 +22,7 @@
             builder.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void GetDefaultConventions_should_return_conventions_for_each_configured_type()
         {
             var configurator =

@@ -4,10 +4,10 @@ namespace MefContrib.Integration.Autofac.Tests
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
     using global::Autofac;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using IAutofacContainer = global::Autofac.ILifetimeScope;
 
-    [TestFixture]
+    [TestClass]
     public class ContainerExtensionsTests
     {
         public interface IMefExposedComponent
@@ -83,7 +83,7 @@ namespace MefContrib.Integration.Autofac.Tests
             return builder.Build();
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromAutofacTest()
         {
             var container = ConfigureAutofacThenMef();
@@ -92,7 +92,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.IsNotNull(component);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromAutofac2Test()
         {
             var container = ConfigureMefThenAutofac();
@@ -101,7 +101,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.IsNotNull(component);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveMefFromAutofacTest()
         {
             var container = ConfigureAutofacThenMef();
@@ -109,7 +109,7 @@ namespace MefContrib.Integration.Autofac.Tests
             var component = container.Resolve<IMefExposedComponent>();
             Assert.IsNotNull(component);
         }
-        [Test]
+        [TestMethod]
         public void ResolveMefFromAutofac2Test()
         {
             var container = ConfigureMefThenAutofac();
@@ -118,7 +118,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.IsNotNull(component);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByCtorTest()
         {
             var container = ConfigureAutofacThenMef();
@@ -131,7 +131,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreNotEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByCtor2Test()
         {
             var container = ConfigureMefThenAutofac();
@@ -144,7 +144,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreNotEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByPropTest()
         {
             var container = ConfigureAutofacThenMef();
@@ -157,7 +157,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreNotEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByProp2Test()
         {
             var container = ConfigureMefThenAutofac();
@@ -170,7 +170,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreNotEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByCtorWithScopeTest()
         {
             IAutofacContainer container = ConfigureAutofacThenMef();
@@ -187,7 +187,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByCtorWithScope2Test()
         {
             IAutofacContainer container = ConfigureMefThenAutofac();
@@ -205,7 +205,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByPropWithScopeTest()
         {
             IAutofacContainer container = ConfigureAutofacThenMef();
@@ -223,7 +223,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreEqual(autofacComponent, component.AutofacComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveAutofacFromMefByPropWithScope2Test()
         {
             IAutofacContainer container = ConfigureMefThenAutofac();
@@ -287,7 +287,7 @@ namespace MefContrib.Integration.Autofac.Tests
             public int InstanceCount { get { return m_InstanceCount; } }
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacInstanceCountTest()
         {
             CountableAutofacComponent.ResetInstanceCount();
@@ -296,7 +296,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreEqual(1, countable.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacInstanceCount2Test()
         {
             CountableAutofacComponent.ResetInstanceCount();
@@ -305,7 +305,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreEqual(1, countable.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefInstanceCountTest()
         {
             CountableMefComponent.ResetInstanceCount();
@@ -314,7 +314,7 @@ namespace MefContrib.Integration.Autofac.Tests
             Assert.AreEqual(1, countable.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefInstanceCount2Test()
         {
             CountableMefComponent.ResetInstanceCount();
@@ -335,7 +335,7 @@ namespace MefContrib.Integration.Autofac.Tests
             public ICountableAutofacComponent Component { get; set; }
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacInstanceCountDepScopedTest()
         {
             CountableAutofacComponent.ResetInstanceCount();

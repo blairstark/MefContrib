@@ -4,7 +4,7 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.ComponentModel.Composition;
     using System.Reflection;
     using MefContrib.Tests;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class DefaultContractServiceTests
     {
@@ -15,7 +15,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             this.Service = new DefaultConventionContractService();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_be_virtual()
         {
             var method =
@@ -24,7 +24,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             IsMethodVirtual(method).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_throw_argumentnullexception_when_called_with_convention_that_is_null()
         {
             var exception =
@@ -33,7 +33,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_throw_argumentnullexception_when_called_with_null_member()
         {
             var exception =
@@ -42,7 +42,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_convention_contract_name_when_not_null()
         {
             const string contract = "Contract";
@@ -60,7 +60,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldEqual(contract);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_convention_contract_type_when_not_null_and_contract_name_is_null()
         {
             var convention =
@@ -79,7 +79,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_contract_name_of_field_type_when_called_with_field_and_contract_name_and_type_are_null()
         {
             var member =
@@ -102,7 +102,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_contract_name_of_property_type_when_called_with_property_and_contract_name_and_type_are_null()
         {
             var member =
@@ -125,7 +125,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_type_identity_of_method_type_when_called_with_method_and_contract_name_and_type_are_null()
         {
             var member =
@@ -148,7 +148,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_be_virtual()
         {
             var method =
@@ -157,7 +157,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             IsMethodVirtual(method).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_be_virtual()
         {
             var method =
@@ -166,7 +166,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             IsMethodVirtual(method).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_be_virtual()
         {
             var method =
