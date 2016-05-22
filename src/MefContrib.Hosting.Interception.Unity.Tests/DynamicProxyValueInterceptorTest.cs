@@ -4,13 +4,12 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
-    using Microsoft.Practices.Unity;
-    using Microsoft.Practices.Unity.InterceptionExtension;
     using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Hosting.Interception.Unity;
     using MefContrib.Tests;
     using NUnit.Framework;
-
+    using Microsoft.Practices.Unity.InterceptionExtension;
+    using Microsoft.Practices.Unity;
     [TestFixture]
     public class InterfaceInterceptorTests
     {
