@@ -5,11 +5,11 @@ using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Practices.Unity;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Integration.Unity.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class LazyResolutionTests
     {
         #region Fake components
@@ -54,7 +54,7 @@ namespace MefContrib.Integration.Unity.Tests
 
         #endregion
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveLazyTypeRegisteredInMefTest()
         {
             MefComponent1.InstanceCount = 0;
@@ -67,17 +67,17 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.AddExtension(new CompositionIntegration(false));
             unityContainer.Configure<CompositionIntegration>().Catalogs.Add(assemblyCatalog);
 
-            Assert.That(MefComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.AreEqual(0, MefComponent1.InstanceCount);
 
             var lazyMefComponent = unityContainer.Resolve<Lazy<IMefComponent>>();
-            Assert.That(MefComponent1.InstanceCount, Is.EqualTo(0));
-            Assert.That(lazyMefComponent, Is.Not.Null);
-            Assert.That(lazyMefComponent.Value, Is.Not.Null);
-            Assert.That(MefComponent1.InstanceCount, Is.EqualTo(1));
-            Assert.That(lazyMefComponent.Value.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.AreEqual(0, MefComponent1.InstanceCount);
+            Assert.IsNotNull(lazyMefComponent);
+            Assert.IsNotNull(lazyMefComponent.Value);
+            Assert.AreEqual(1, MefComponent1.InstanceCount);
+            Assert.IsInstanceOfType(lazyMefComponent.Value, typeof(MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveLazyTypeRegisteredInUnityTest()
         {
             // Setup
@@ -92,15 +92,15 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityComponent, UnityComponent1>();
 
             var lazyUnityComponent = unityContainer.Resolve<Lazy<IUnityComponent>>();
-            Assert.That(lazyUnityComponent, Is.Not.Null);
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.IsNotNull(lazyUnityComponent);
+            Assert.AreEqual(0, UnityComponent1.InstanceCount);
 
-            Assert.That(lazyUnityComponent.Value, Is.Not.Null);
-            Assert.That(lazyUnityComponent.Value.GetType(), Is.EqualTo(typeof(UnityComponent1)));
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(1));
+            Assert.IsNotNull(lazyUnityComponent.Value);
+            Assert.IsInstanceOfType(lazyUnityComponent.Value, typeof(UnityComponent1));
+            Assert.AreEqual(1, UnityComponent1.InstanceCount);
         }
-        
-        [Test]
+
+        [TestMethod]
         public void UnityCanResolveLazyEnumerableOfTypesRegisteredInUnityTest()
         {
             // Setup
@@ -112,20 +112,20 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.Configure<CompositionIntegration>().Catalogs.Add(assemblyCatalog);
 
             UnityComponent1.InstanceCount = 0;
-            
+
             unityContainer.RegisterType<IUnityComponent, UnityComponent1>("component1");
             unityContainer.RegisterType<IUnityComponent, UnityComponent2>("component2");
 
             var collectionOfLazyUnityComponents = unityContainer.Resolve<Lazy<IEnumerable<IUnityComponent>>>();
-            Assert.That(collectionOfLazyUnityComponents, Is.Not.Null);
+            Assert.IsNotNull(collectionOfLazyUnityComponents);
 
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.AreEqual(0, UnityComponent1.InstanceCount);
             var list = new List<IUnityComponent>(collectionOfLazyUnityComponents.Value);
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(1));
-            Assert.That(list.Count, Is.EqualTo(2));
+            Assert.AreEqual(1, UnityComponent1.InstanceCount);
+            Assert.AreEqual(2, list.Count);
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveEnumerableOfLazyTypesRegisteredInUnityAndMefTest()
         {
             // Setup
@@ -145,38 +145,38 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IMixedComponent, MixedComponent3>();
 
             var collectionOfLazyUnityComponents = unityContainer.Resolve<IEnumerable<Lazy<IMixedComponent>>>();
-            Assert.That(collectionOfLazyUnityComponents, Is.Not.Null);
+            Assert.IsNotNull(collectionOfLazyUnityComponents);
 
-            Assert.That(MixedComponent1.InstanceCount, Is.EqualTo(0));
-            Assert.That(MixedComponent2.InstanceCount, Is.EqualTo(0));
-            Assert.That(MixedComponent5.InstanceCount, Is.EqualTo(0));
+            Assert.AreEqual(0, MixedComponent1.InstanceCount);
+            Assert.AreEqual(0, MixedComponent2.InstanceCount);
+            Assert.AreEqual(0, MixedComponent5.InstanceCount);
 
             var list = new List<Lazy<IMixedComponent>>(collectionOfLazyUnityComponents);
 
-            Assert.That(MixedComponent1.InstanceCount, Is.EqualTo(0));
-            Assert.That(MixedComponent2.InstanceCount, Is.EqualTo(0));
-            Assert.That(MixedComponent5.InstanceCount, Is.EqualTo(0));
+            Assert.AreEqual(0, MixedComponent1.InstanceCount);
+            Assert.AreEqual(0, MixedComponent2.InstanceCount);
+            Assert.AreEqual(0, MixedComponent5.InstanceCount);
 
-            Assert.That(list[0].Value, Is.Not.Null);
-            Assert.That(list[1].Value, Is.Not.Null);
-            Assert.That(list[2].Value, Is.Not.Null);
-            Assert.That(list[3].Value, Is.Not.Null);
-            Assert.That(list[4].Value, Is.Not.Null);
+            Assert.IsNotNull(list[0].Value);
+            Assert.IsNotNull(list[1].Value);
+            Assert.IsNotNull(list[2].Value);
+            Assert.IsNotNull(list[3].Value);
+            Assert.IsNotNull(list[4].Value);
 
-            Assert.That(MixedComponent1.InstanceCount, Is.EqualTo(1));
-            Assert.That(MixedComponent2.InstanceCount, Is.EqualTo(1));
-            Assert.That(MixedComponent5.InstanceCount, Is.EqualTo(1));
+            Assert.AreEqual(1, MixedComponent1.InstanceCount);
+            Assert.AreEqual(1, MixedComponent2.InstanceCount);
+            Assert.AreEqual(1, MixedComponent5.InstanceCount);
 
-            Assert.That(list.Count, Is.EqualTo(5));
+            Assert.AreEqual(5, list.Count);
 
-            Assert.That(list.Select(t => t.Value).OfType<MixedComponent1>().Count(), Is.EqualTo(1));
-            Assert.That(list.Select(t => t.Value).OfType<MixedComponent2>().Count(), Is.EqualTo(1));
-            Assert.That(list.Select(t => t.Value).OfType<MixedComponent3>().Count(), Is.EqualTo(1));
-            Assert.That(list.Select(t => t.Value).OfType<MixedComponent4>().Count(), Is.EqualTo(1));
-            Assert.That(list.Select(t => t.Value).OfType<MixedComponent5>().Count(), Is.EqualTo(1));
+            Assert.AreEqual(1,list.Select(t => t.Value).OfType<MixedComponent1>().Count());
+            Assert.AreEqual(1,list.Select(t => t.Value).OfType<MixedComponent2>().Count());
+            Assert.AreEqual(1,list.Select(t => t.Value).OfType<MixedComponent3>().Count());
+            Assert.AreEqual(1,list.Select(t => t.Value).OfType<MixedComponent4>().Count());
+            Assert.AreEqual(1,list.Select(t => t.Value).OfType<MixedComponent5>().Count());
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveEnumerableOfTypesRegisteredInUnityAndMefTest()
         {
             // Setup
@@ -196,22 +196,22 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IMixedComponent, MixedComponent3>();
 
             var collectionOfLazyUnityComponents = unityContainer.Resolve<IEnumerable<IMixedComponent>>();
-            Assert.That(collectionOfLazyUnityComponents, Is.Not.Null);
+            Assert.IsNotNull(collectionOfLazyUnityComponents);
 
-            Assert.That(MixedComponent1.InstanceCount, Is.EqualTo(1));
-            Assert.That(MixedComponent2.InstanceCount, Is.EqualTo(1));
-            Assert.That(MixedComponent5.InstanceCount, Is.EqualTo(1));
+            Assert.AreEqual(1,MixedComponent1.InstanceCount);
+            Assert.AreEqual(1,MixedComponent2.InstanceCount);
+            Assert.AreEqual(1,MixedComponent5.InstanceCount);
 
             var list = new List<IMixedComponent>(collectionOfLazyUnityComponents);
-            Assert.That(list.Count, Is.EqualTo(5));
-            Assert.That(list.OfType<MixedComponent1>().Count(), Is.EqualTo(1));
-            Assert.That(list.OfType<MixedComponent2>().Count(), Is.EqualTo(1));
-            Assert.That(list.OfType<MixedComponent3>().Count(), Is.EqualTo(1));
-            Assert.That(list.OfType<MixedComponent4>().Count(), Is.EqualTo(1));
-            Assert.That(list.OfType<MixedComponent5>().Count(), Is.EqualTo(1));
+            Assert.AreEqual(5, list.Count);
+            Assert.AreEqual(1,list.OfType<MixedComponent1>().Count() );
+            Assert.AreEqual(1,list.OfType<MixedComponent2>().Count() );
+            Assert.AreEqual(1,list.OfType<MixedComponent3>().Count() );
+            Assert.AreEqual(1,list.OfType<MixedComponent4>().Count() );
+            Assert.AreEqual(1, list.OfType<MixedComponent5>().Count() );
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveEnumerableOfLazyTypesRegisteredInUnityTest()
         {
             // Setup
@@ -227,18 +227,18 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityComponent, UnityComponent2>("component2");
 
             var collectionOfLazyUnityComponents = unityContainer.Resolve<IEnumerable<Lazy<IUnityComponent>>>();
-            Assert.That(collectionOfLazyUnityComponents, Is.Not.Null);
+            Assert.IsNotNull(collectionOfLazyUnityComponents);
 
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.AreEqual(0, UnityComponent1.InstanceCount);
             var list = new List<Lazy<IUnityComponent>>(collectionOfLazyUnityComponents);
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(0));
-            Assert.That(list[0].Value, Is.Not.Null);
-            Assert.That(list[1].Value, Is.Not.Null);
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(1));
-            Assert.That(list.Count, Is.EqualTo(2));
+            Assert.AreEqual(0, UnityComponent1.InstanceCount);
+            Assert.IsNotNull(list[0].Value);
+            Assert.IsNotNull(list[1].Value);
+            Assert.AreEqual(1, UnityComponent1.InstanceCount);
+            Assert.AreEqual(2, list.Count);
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveEnumerableOfTypesRegisteredInUnityTest()
         {
             // Setup
@@ -254,11 +254,11 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityComponent, UnityComponent2>("component2");
 
             var collectionOfLazyUnityComponents = unityContainer.Resolve<IEnumerable<IUnityComponent>>();
-            Assert.That(collectionOfLazyUnityComponents, Is.Not.Null);
-            Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(1));
+            Assert.IsNotNull(collectionOfLazyUnityComponents);  
+            Assert.AreEqual(1, UnityComponent1.InstanceCount);
 
             var list = new List<IUnityComponent>(collectionOfLazyUnityComponents);
-            Assert.That(list.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, list.Count);
         }
 
         public interface IModule { }
@@ -268,7 +268,7 @@ namespace MefContrib.Integration.Unity.Tests
 
         public class Module2 : IModule { }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveEnumerableOfTypesRegisteredInUnityEvenIfOnOfTheTypesIsExportedViaMefTest()
         {
             // Setup
@@ -279,13 +279,13 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IModule, Module2>("mod2");
 
             var modules1 = unityContainer.Resolve<IEnumerable<IModule>>();
-            Assert.That(modules1.Count(), Is.EqualTo(2));
+            Assert.AreEqual(2, modules1.Count());
 
             var modules2 = unityContainer.Resolve<IEnumerable<IModule>>();
-            Assert.That(modules2.Count(), Is.EqualTo(2));
+            Assert.AreEqual(2, modules2.Count());
         }
-        
-        [Test]
+
+        [TestMethod]
         public void UnityCanResolveEnumerableOfTypesRegisteredInUnityAndMefEvenIfBothMefAndUnityRegisterTheSameTypeTest()
         {
             // Setup
@@ -296,12 +296,12 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IModule, Module2>("module2");
 
             var modules1 = unityContainer.Resolve<IEnumerable<IModule>>();
-            Assert.That(modules1.Count(), Is.EqualTo(3));
-            Assert.That(modules1.OfType<Module1>().Count(), Is.EqualTo(2));
+            Assert.AreEqual(3, modules1.Count());
+            Assert.AreEqual(2, modules1.OfType<Module1>().Count());
 
             var modules2 = unityContainer.Resolve<IEnumerable<IModule>>();
-            Assert.That(modules2.Count(), Is.EqualTo(3));
-            Assert.That(modules1.OfType<Module1>().Count(), Is.EqualTo(2));
+            Assert.AreEqual(3,modules2.Count());
+            Assert.AreEqual(2, modules1.OfType<Module1>().Count());
         }
     }
 }

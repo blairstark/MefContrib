@@ -4,14 +4,14 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /*
     public static class ContextSpecificationAssertions
     {
         public static void ShouldMatch<T>(this T actual, Func<T, bool> condition)
         {
-            Assert.True(condition.Invoke(actual));
+            Assert.IsTrue(condition.Invoke(actual));
         }
 
         public static void ShouldContainType<T>(this IList collection)
@@ -19,7 +19,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             var found =
                 collection.Contains(typeof(T));
 
-            Assert.True(found);
+            Assert.IsTrue(found);
         }
 
         public static void ShouldHaveCount<T>(this IList<T> list, int expected)
@@ -29,7 +29,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
         public static void ShouldBeTrue(this bool actual)
         {
-            Assert.True(actual);
+            Assert.IsTrue(actual);
         }
 
         public static void ShouldBeFalse(this bool actual)
@@ -59,17 +59,17 @@ namespace MefContrib.Hosting.Conventions.Tests
 
         public static void ShouldBeNull(this object actual)
         {
-            Assert.Null(actual);
+            Assert.IsNull(actual);
         }
 
         public static void ShouldNotBeNull(this object actual)
         {
-            Assert.NotNull(actual);
+            Assert.IsNotNull(actual);
         }
 
         public static void ShouldBeOfType<T>(this Type asserted)
         {
-            Assert.True(asserted == typeof(T));
+            Assert.IsTrue(asserted == typeof(T));
         }
 
         public static void ShouldBeOfType<T>(this object asserted)

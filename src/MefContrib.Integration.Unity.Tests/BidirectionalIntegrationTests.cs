@@ -2,14 +2,14 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using Microsoft.Practices.Unity;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Integration.Unity.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class BidirectionalIntegrationTests
     {
-        [Test]
+        [TestMethod]
         public void UnityCanResolveMefComponentThatHasUnityDependenciesTest()
         {
             // Setup
@@ -22,12 +22,12 @@ namespace MefContrib.Integration.Unity.Tests
 
             // Test
             var mefComponent = unityContainer.Resolve<IMefComponentWithUnityDependencies>();
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.MefOnlyComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
-            Assert.That(mefComponent.UnityOnlyComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.MefOnlyComponent, typeof(MefComponent1));
+            Assert.IsInstanceOfType(mefComponent.UnityOnlyComponent, typeof(UnityOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveMefComponentThatHasUnityDependenciesThatHaveMefDependenciesTest()
         {
             // Setup
@@ -41,17 +41,17 @@ namespace MefContrib.Integration.Unity.Tests
 
             // Test
             var mefComponent = unityContainer.Resolve<IMefComponentWithUnityDependencies>("component2");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.GetType(), Is.EqualTo(typeof(MefComponentWithUnityDependencies2)));
-            Assert.That(mefComponent.MefOnlyComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
-            Assert.That(mefComponent.UnityOnlyComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent,typeof(MefComponentWithUnityDependencies2));
+            Assert.IsInstanceOfType(mefComponent.MefOnlyComponent,  typeof(MefComponent1));
+            Assert.IsInstanceOfType(mefComponent.UnityOnlyComponent, typeof(UnityOnlyComponent1));
 
             var mefComponentWithUnityDependencies2 = (MefComponentWithUnityDependencies2) mefComponent;
-            Assert.That(mefComponentWithUnityDependencies2.MixedUnityMefComponent.GetType(), Is.EqualTo(typeof(UnityComponent1)));
-            Assert.That(mefComponentWithUnityDependencies2.MixedUnityMefComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsInstanceOfType(mefComponentWithUnityDependencies2.MixedUnityMefComponent, typeof(UnityComponent1));
+            Assert.IsInstanceOfType(mefComponentWithUnityDependencies2.MixedUnityMefComponent.MefComponent, typeof(MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCircularDependencyIsDetectedTest()
         {
             // Setup
@@ -64,10 +64,10 @@ namespace MefContrib.Integration.Unity.Tests
             
             // Test
             var unityOnlyComponent1 = unityContainer.Resolve<UnityOnlyComponent1>();
-            Assert.That(unityOnlyComponent1, Is.Not.Null);
+            Assert.IsNotNull(unityOnlyComponent1);
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveUnityComponentThatHasUnityAndMefDependenciesTest()
         {
             // Setup
@@ -81,13 +81,13 @@ namespace MefContrib.Integration.Unity.Tests
 
             // Test
             var unityMixedComponent = unityContainer.Resolve<UnityMixedComponent>();
-            Assert.That(unityMixedComponent, Is.Not.Null);
-            Assert.That(unityMixedComponent.GetType(), Is.EqualTo(typeof(UnityMixedComponent)));
-            Assert.That(unityMixedComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
-            Assert.That(unityMixedComponent.UnityComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            Assert.IsNotNull(unityMixedComponent);
+            Assert.IsInstanceOfType(unityMixedComponent, typeof(UnityMixedComponent));
+            Assert.IsInstanceOfType(unityMixedComponent.MefComponent, typeof(MefComponent1));
+            Assert.IsInstanceOfType(unityMixedComponent.UnityComponent, typeof(UnityOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void UnityContainerCanBeResolvedByMefTest()
         {
             // Setup
@@ -99,20 +99,20 @@ namespace MefContrib.Integration.Unity.Tests
 
             var compositionContainer1 = unityContainer.Resolve<CompositionContainer>();
             var compositionContainer2 = unityContainer.Resolve<CompositionContainer>();
-            Assert.That(compositionContainer1, Is.Not.Null);
-            Assert.That(compositionContainer2, Is.Not.Null);
-            Assert.That(compositionContainer1, Is.SameAs(compositionContainer2));
+            Assert.IsNotNull(compositionContainer1);
+            Assert.IsNotNull(compositionContainer2);
+            Assert.AreSame(compositionContainer1, compositionContainer2);
 
             var unityContainerFromMef1 = compositionContainer1.GetExportedValue<IUnityContainer>();
             var unityContainerFromMef2 = compositionContainer1.GetExportedValue<IUnityContainer>();
             
-            Assert.That(unityContainerFromMef1, Is.Not.Null);
-            Assert.That(unityContainerFromMef2, Is.Not.Null);
+            Assert.IsNotNull(unityContainerFromMef1);
+            Assert.IsNotNull(unityContainerFromMef2);
             Assert.AreSame(unityContainerFromMef1, unityContainerFromMef2);
             Assert.AreSame(unityContainer, unityContainerFromMef1);
         }
 
-        [Test]
+        [TestMethod]
         public void MefResolvesServiceRegisteredInUnityByTypeTest()
         {
             // Setup
@@ -128,14 +128,14 @@ namespace MefContrib.Integration.Unity.Tests
             var container = unityContainer.Resolve<CompositionContainer>();
             var unityOnlyComponent = container.GetExportedValue<IUnityOnlyComponent>();
             var unityOnlyComponent2 = unityContainer.Resolve<IUnityOnlyComponent>();
-            Assert.That(unityOnlyComponent, Is.Not.Null);
-            Assert.That(unityOnlyComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
-            Assert.That(unityOnlyComponent2, Is.Not.Null);
-            Assert.That(unityOnlyComponent2.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
-            Assert.That(unityOnlyComponent, Is.EqualTo(unityOnlyComponent2));
+            Assert.IsNotNull(unityOnlyComponent);
+            Assert.IsInstanceOfType(unityOnlyComponent, typeof(UnityOnlyComponent1));
+            Assert.IsNotNull(unityOnlyComponent2);
+            Assert.IsInstanceOfType(unityOnlyComponent2, typeof(UnityOnlyComponent1));
+            Assert.AreEqual(unityOnlyComponent, unityOnlyComponent2);
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveMefComponentThatHasUnityAndMefDependenciesTest()
         {
             // Setup
@@ -149,13 +149,13 @@ namespace MefContrib.Integration.Unity.Tests
             // Test
             var container = unityContainer.Resolve<CompositionContainer>();
             var mefMixedComponent = container.GetExportedValue<MefMixedComponent>();
-            Assert.That(mefMixedComponent, Is.Not.Null);
-            Assert.That(mefMixedComponent.GetType(), Is.EqualTo(typeof(MefMixedComponent)));
-            Assert.That(mefMixedComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
-            Assert.That(mefMixedComponent.UnityComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            Assert.IsNotNull(mefMixedComponent);
+            Assert.IsInstanceOfType(mefMixedComponent, typeof(MefMixedComponent));
+            Assert.IsInstanceOfType(mefMixedComponent.MefComponent, typeof(MefComponent1));
+            Assert.IsInstanceOfType(mefMixedComponent.UnityComponent, typeof(UnityOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void UnityResolvesUnityComponentRegisteredWithoutInterfaceTest()
         {
             // Setup
@@ -169,10 +169,10 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<UnityComponent3>();
 
             var component2 = unityContainer.Resolve<UnityComponent2>();
-            Assert.That(component2, Is.Not.Null);
-            Assert.That(component2.ImportedMefComponent, Is.Not.Null);
-            Assert.That(component2.ImportedMefComponent.GetType(), Is.EqualTo(typeof(MefComponent2)));
-            Assert.That(component2.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent2)));
+            Assert.IsNotNull(component2);
+            Assert.IsNotNull(component2.ImportedMefComponent);
+            Assert.IsInstanceOfType(component2.ImportedMefComponent, typeof(MefComponent2));
+            Assert.IsInstanceOfType(component2.MefComponent, typeof(MefComponent2));
         }
 
         public class MefSingletonComponent
@@ -185,7 +185,7 @@ namespace MefContrib.Integration.Unity.Tests
             }
         }
 
-        [Test]
+        [TestMethod]
         public void UnityCanResolveMefComponentRegisteredUsingAddExportedValueTest()
         {
             MefSingletonComponent.Counter = 0;
@@ -204,12 +204,12 @@ namespace MefContrib.Integration.Unity.Tests
             compositionContainer.Compose(batch);
 
             var singletonComponent1 = compositionContainer.GetExport<MefSingletonComponent>().Value;
-            Assert.That(MefSingletonComponent.Counter, Is.EqualTo(1));
-            Assert.That(singletonComponent1, Is.SameAs(singletonComponent));
+            Assert.AreEqual(MefSingletonComponent.Counter, 1);
+            Assert.AreSame(singletonComponent1, singletonComponent);
 
             var singletonComponent2 = unityContainer.Resolve<MefSingletonComponent>();
-            Assert.That(MefSingletonComponent.Counter, Is.EqualTo(1));
-            Assert.That(singletonComponent2, Is.SameAs(singletonComponent));
+            Assert.AreEqual(1, MefSingletonComponent.Counter);
+            Assert.AreSame(singletonComponent2, singletonComponent);
         }
     }
 }

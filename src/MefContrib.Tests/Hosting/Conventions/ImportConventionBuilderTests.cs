@@ -8,9 +8,9 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.Linq.Expressions;
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class ImportConventionBuilderTests
     {
         private ImportConventionBuilder<ImportConvention> conventionBuilder;
@@ -19,13 +19,13 @@ namespace MefContrib.Hosting.Conventions.Tests
         {
         }
         
-        [SetUp]
+        [TestInitialize]
         public void Setup()
         {
             this.conventionBuilder = new ImportConventionBuilder<ImportConvention>(); ;
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_return_reference_to_itself_when_called_with_function()
         {
             var reference =
@@ -35,7 +35,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_throw_argument_null_exception_when_called_with_null_function()
         {
             var exception =
@@ -44,7 +44,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_set_contract_type_on_convention_when_called_with_function()
         {
             this.conventionBuilder
@@ -60,7 +60,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractType.Invoke(property).ShouldBeOfType<ImportConvention>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_return_reference_to_itself_when_called_with_type()
         {
             var reference =
@@ -70,7 +70,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_set_contract_type_on_convention_when_called_with_type()
         {
             this.conventionBuilder
@@ -83,7 +83,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractType.Invoke(null).ShouldBeOfType<IImportConvention>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_return_reference_to_itself_when_called_with_type()
         {
             var reference =
@@ -93,7 +93,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_set_contract_name_on_convention_when_called_with_type()
         {
             this.conventionBuilder
@@ -109,7 +109,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractName.Invoke(null).ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_return_reference_to_itself_when_called_with_function()
         {
             var reference =
@@ -119,7 +119,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_throw_argument_null_exception_when_called_with_null_function()
         {
             var exception =
@@ -128,7 +128,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_set_contract_name_on_convention_when_called_with_function()
         {
             this.conventionBuilder
@@ -144,7 +144,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractName.Invoke(member).ShouldEqual(member.Name);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_return_reference_to_itself_when_called_with_string()
         {
             var reference =
@@ -154,7 +154,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_throw_argument_out_of_range_exception_when_called_with_empty_string()
         {
             var exception =
@@ -163,7 +163,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_set_contract_name_on_convention_when_called_with_string()
         {
             this.conventionBuilder
@@ -176,7 +176,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractName.Invoke(null).ShouldEqual("Foo");
         }
 
-        [Test]
+        [TestMethod]
         public void GetConvention_should_not_return_null_on_new_convention()
         {
             var convention =
@@ -185,7 +185,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void AllowDefaultValue_should_return_reference_to_itself()
         {
             var reference =
@@ -194,7 +194,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void AllowDefaultValue_should_be_false_on_new_convention()
         {
             var convention = 
@@ -203,7 +203,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.AllowDefaultValue.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void AllowDefaultValue_should_set_allow_default_value_on_convention_to_true()
         {
             this.conventionBuilder
@@ -215,7 +215,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.AllowDefaultValue.ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_be_null_on_new_convention()
         {
             var convention =
@@ -224,7 +224,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractName.ShouldBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_be_null_on_new_convention()
         {
             var convention =
@@ -233,7 +233,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractType.ShouldBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void CreationPolicy_should_be_any_on_new_convention()
         {
             var convention =
@@ -242,7 +242,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.CreationPolicy.ShouldEqual(CreationPolicy.Any);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeNonShared_should_return_reference_to_itself()
         {
             var reference =
@@ -251,7 +251,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeNonShared_should_set_creation_policy_on_convention_to_non_shared()
         {
             this.conventionBuilder
@@ -263,7 +263,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.CreationPolicy.ShouldEqual(CreationPolicy.NonShared);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeShared_should_return_reference_to_itself()
         {
             var reference =
@@ -272,7 +272,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeShared_should_set_creation_policy_on_convention_to_non_shared()
         {
             this.conventionBuilder
@@ -284,7 +284,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.CreationPolicy.ShouldEqual(CreationPolicy.Shared);
         }
 
-        [Test]
+        [TestMethod]
         public void Recomposable_should_return_reference_to_itself()
         {
             var reference =
@@ -293,7 +293,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void Recomposable_should_be_false_on_new_convention()
         {
             var convention =
@@ -302,7 +302,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.Recomposable.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Recomposable_should_set_recomposable_on_convention_to_true()
         {
             this.conventionBuilder
@@ -314,7 +314,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.Recomposable.ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void RequiredMetadata_should_return_reference_to_itself_when_called_with_name_and_type()
         {
             var reference =
@@ -323,7 +323,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void RequireMetadata_should_add_required_metadata_object_to_required_metadata_collection_on_convention_when_called_with_name_and_type()
         {
             this.conventionBuilder
@@ -338,7 +338,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.RequiredMetadata.First().ShouldEqual(expectedMetadata);
         }
 
-        [Test]
+        [TestMethod]
         public void RequireMetadata_should_throw_argument_null_exception_if_name_is_null()
         {
             var exception =
@@ -347,7 +347,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void RequireMetadata_should_throw_argument_out_of_range_exception_if_name_is_empty()
         {
             var exception =
@@ -356,7 +356,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void RequireMetadata_should_return_reference_to_itself()
         {
             var reference =
@@ -365,7 +365,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void RequireMetadata_should_add_public_read_only_properties_from_metadata_view_to_required_metadata_on_convention()
         {
             this.conventionBuilder
@@ -383,7 +383,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             containsAllExpectedMetadata.ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Members_should_return_reference_to_itself_when_called_with_function_over_type()
         {
             var reference =
@@ -392,7 +392,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void Members_should_throw_argument_null_exception_when_called_with_null()
         {
             var exception =
@@ -401,7 +401,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Members_should_set_members_on_convention_when_called_with_function_over_type()
         {
             this.conventionBuilder
@@ -416,7 +416,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             matchedMembers.Count().ShouldEqual(7);
         }
 
-        //[Test]
+        //[TestMethod]
         //public void Members_should_return_reference_to_itself_when_called_with_void_expression()
         //{
         //    var reference =
@@ -426,7 +426,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         //    reference.ShouldBeSameAs(this.conventionBuilder);
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void Members_should_throw_argument_null_exception_when_called_with_null_void_expression()
         //{
         //    var exception =
@@ -435,7 +435,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         //    exception.ShouldBeOfType<ArgumentNullException>();
         //}
 
-        //[Test]
+        //[TestMethod]
         //public void Members_should_set_members_on_convention_when_called_with_void_expression()
         //{
         //    this.conventionBuilder
@@ -450,7 +450,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         //    matchedMembers.Count().ShouldEqual(1);
         //}
 
-        [Test]
+        [TestMethod]
         public void Members_should_return_reference_to_itself_when_called_with_value_expression()
         {
             var reference =
@@ -460,7 +460,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void Members_should_throw_argument_null_exception_when_called_with_null_value_expression()
         {
             var exception =
@@ -469,7 +469,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Members_should_set_members_on_convention_when_called_with_value_expression()
         {
             this.conventionBuilder

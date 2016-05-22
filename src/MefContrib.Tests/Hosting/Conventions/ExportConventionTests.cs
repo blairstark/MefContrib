@@ -3,12 +3,12 @@ using MefContrib.Tests;
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class ExportConventionTests
     {
-        [Test]
+        [TestMethod]
         public void Metadata_should_not_null_on_new_instance()
         {
             var export =
@@ -17,7 +17,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             export.Metadata.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_if_called_with_null()
         {
             var export =
@@ -29,7 +29,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_contract_is_not_same_on_the_instance_that_is_being_compared_againts()
         {
             var export =
@@ -41,7 +41,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_required_metadata_is_not_same_on_the_instance_that_is_being_compared_against()
         {
             var instance =
@@ -65,7 +65,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_type_identity_is_not_same_on_the_instance_that_is_being_compared_against()
         {
             var instance =
@@ -77,7 +77,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_true_if_same_as_instance_being_compared_against()
         {
             var instance =

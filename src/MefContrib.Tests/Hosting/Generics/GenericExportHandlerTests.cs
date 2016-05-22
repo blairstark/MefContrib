@@ -5,22 +5,22 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using MefContrib.Tests;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Generics.Tests
 {
     namespace GenericExportHandlerTests
     {
-        [TestFixture]
+        [TestClass]
         public class When_querying_for_an_order_repository_and_no_closed_repository_is_present : GenericExportHandlerContext
         {
-            [Test]
+            [TestMethod]
             public void Order_repository_part_definition_is_created()
             {
                 Assert.IsNotNull(result.Item1);
             }
 
-            [Test]
+            [TestMethod]
             public void Order_repository_export_is_created()
             {
                 Assert.IsNotNull(result.Item2);
@@ -36,10 +36,10 @@ namespace MefContrib.Hosting.Generics.Tests
             private Tuple<ComposablePartDefinition, ExportDefinition> result;
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_querying_for_an_order_repository_and_closed_repository_is_passed_in : GenericExportHandlerContext
         {
-            [Test]
+            [TestMethod]
             public void Closed_generic_repository_is_not_created()
             {
                 result.Count().ShouldEqual(1);
@@ -55,14 +55,14 @@ namespace MefContrib.Hosting.Generics.Tests
             private IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> result;
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_querying_for_order_processor : GenericExportHandlerContext
         {
-            [Test]
+            [TestMethod]
             public void Order_processor_part_is_returned()
             {
-                Assert.NotNull(result.Item1);
-                Assert.NotNull(result.Item2);
+                Assert.IsNotNull(result.Item1);
+                Assert.IsNotNull(result.Item2);
             }
 
             public override void Context()
@@ -75,14 +75,14 @@ namespace MefContrib.Hosting.Generics.Tests
             private Tuple<ComposablePartDefinition, ExportDefinition> result;
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_querying_for_ctor_order_processor : GenericExportHandlerContext
         {
-            [Test]
+            [TestMethod]
             public void Ctor_order_processor_part_is_returned()
             {
-                Assert.NotNull(result.Item1);
-                Assert.NotNull(result.Item2);
+                Assert.IsNotNull(result.Item1);
+                Assert.IsNotNull(result.Item2);
             }
 
             public override void Context()

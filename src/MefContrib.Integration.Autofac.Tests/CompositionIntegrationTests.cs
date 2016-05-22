@@ -9,9 +9,9 @@ namespace MefContrib.Integration.Autofac.Tests
     using System.Reflection;
     using global::Autofac;
     using global::Autofac.Core;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class CompositionIntegrationTests
     {
 
@@ -25,7 +25,7 @@ namespace MefContrib.Integration.Autofac.Tests
             [Export]
             public static CompositionContainer Container { get; set; }
         }
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentRegisteredByTypeTest()
         {
             // Setup
@@ -41,15 +41,15 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var mefComponent = autofacContainer.Resolve<IMefComponent>();
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent, typeof(MefComponent1));
 
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent.MefComponent, typeof(MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentRegisteredByTypeAndRegistrationNameTest()
         {
             // Setup
@@ -64,15 +64,15 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var mefComponent = autofacContainer.ResolveNamed<IMefComponent>("component2");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.GetType(), Is.EqualTo(typeof(MefComponent2)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent, typeof(MefComponent2));
 
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent2)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent.MefComponent, typeof(MefComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentRegisteredByTypeUsingConstructorInjectionTest()
         {
             // Setup
@@ -87,11 +87,11 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent.MefComponent, typeof(MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMefComponentRegisteredByTypeAndRegistrationNameUsingConstructorInjectionTest()
         {
             // Setup
@@ -106,11 +106,11 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent2)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent.MefComponent, typeof(MefComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacSatisfiesMefImportsByTypeOnAutofacComponentsTest()
         {
             // Setup
@@ -125,11 +125,11 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.ImportedMefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent.ImportedMefComponent, typeof(MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacLazySatisfiesMefImportsByTypeOnAutofacComponentsTest()
         {
             // Setup
@@ -146,17 +146,17 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.GetType(), Is.EqualTo(typeof(AutofacComponent11)));
-            Assert.That(autofacComponent.ImportedMefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
-            Assert.That(autofacComponent.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent, typeof(AutofacComponent11));
+            Assert.IsInstanceOfType(autofacComponent.ImportedMefComponent, typeof(MefComponent1));
+            Assert.IsInstanceOfType(autofacComponent.MefComponent, typeof(MefComponent1));
 
             var autofacComponent11 = (AutofacComponent11)autofacComponent;
             var mefComponent = autofacComponent11.MefComponentFactory();
-            Assert.That(mefComponent, Is.SameAs(autofacComponent.MefComponent));
+            Assert.AreSame(mefComponent, autofacComponent.MefComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacSatisfiesMefImportsByTypeAndRegistrationNameOnAutofacComponentsTest()
         {
             // Setup
@@ -171,11 +171,11 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.ImportedMefComponent.GetType(), Is.EqualTo(typeof(MefComponent2)));
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsInstanceOfType(autofacComponent.ImportedMefComponent, typeof(MefComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacDoesNotSatisfyMefImportsOnAutofacComponentsWhenMarkedWithPartNotComposableAttributeTest()
         {
             // Setup
@@ -190,11 +190,11 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var autofacComponent = autofacContainer.Resolve<IAutofacComponent>();
-            Assert.That(autofacComponent, Is.Not.Null);
-            Assert.That(autofacComponent.ImportedMefComponent, Is.Null);
+            Assert.IsNotNull(autofacComponent);
+            Assert.IsNull(autofacComponent.ImportedMefComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveCompositionContainerTest()
         {
             // Setup
@@ -208,10 +208,10 @@ namespace MefContrib.Integration.Autofac.Tests
 
             var autofacContainer = builder.Build();
             var compositionContainer = autofacContainer.Resolve<CompositionContainer>();
-            Assert.That(compositionContainer, Is.Not.Null);
+            Assert.IsNotNull(compositionContainer);
         }
 
-        [Test]
+        [TestMethod]
         public void AutofacCanResolveMultipleMefInstancesTest()
         {
             // Setup
@@ -224,16 +224,14 @@ namespace MefContrib.Integration.Autofac.Tests
             builder.RegisterCatalog(assemblyCatalog);
 
             var autofacContainer = builder.Build();
-            Assert.That(delegate
-            {
-                var defaultInstance = autofacContainer.Resolve<IMultipleMefComponent>();
-                Debug.WriteLine("Default Instance -> {0}", defaultInstance);
-                var all = autofacContainer.Resolve<IEnumerable<IMultipleMefComponent>>().ToArray();
-                Debug.WriteLine("All instances -> {0}, {1}", all);
-            }, Throws.Nothing);
+            var defaultInstance = autofacContainer.Resolve<IMultipleMefComponent>();
+            Debug.WriteLine("Default Instance -> {0}", defaultInstance);
+            var all = autofacContainer.Resolve<IEnumerable<IMultipleMefComponent>>().ToArray();
+            Debug.WriteLine("All instances -> {0}, {1}", all);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ObjectDisposedException))]
         public void DisposingAutofacDisposesCompositionContainerTest()
         {
             // Setup
@@ -248,11 +246,7 @@ namespace MefContrib.Integration.Autofac.Tests
             var autofacContainer = builder.Build();
             var compositionContainer = autofacContainer.Resolve<CompositionContainer>();
             autofacContainer.Dispose();
-
-            Assert.That(delegate
-            {
-                compositionContainer.GetExport<IMefComponent>();
-            }, Throws.TypeOf<ObjectDisposedException>());
+            compositionContainer.GetExport<IMefComponent>();
         }
     }
 }

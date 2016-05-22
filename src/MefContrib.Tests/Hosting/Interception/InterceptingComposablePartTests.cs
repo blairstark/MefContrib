@@ -6,74 +6,70 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using MefContrib.Tests;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class _InterceptingComposablePartTests
     {
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_should_throw_argument_null_exception_if_called_with_null_composable_part()
         {
-            Assert.That(delegate
-            {
-                new InterceptingComposablePart(null, new FakeInterceptor());
-            }, Throws.TypeOf<ArgumentNullException>());
+            new InterceptingComposablePart(null, new FakeInterceptor());
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_should_throw_argument_null_exception_if_called_with_null_interceptor()
         {
             var partDefinition = new TypeCatalog(typeof(Part1)).Parts.First();
-            Assert.That(delegate
-            {
+            new InterceptingComposablePart(partDefinition.CreatePart(), null);
 
-                new InterceptingComposablePart(partDefinition.CreatePart(), null);
-            }, Throws.TypeOf<ArgumentNullException>());
         }
     }
 
     namespace InterceptingComposablePartTests
     {
-        [TestFixture]
+        [TestClass]
         public class When_accessing_import_definitions
             : InterceptingComposablePartContext
         {
-            [Test]
+            [TestMethod]
             public void It_should_pull_from_the_inner_part()
             {
                 InterceptingPart.ImportDefinitions.ShouldEqual(InterceptedPart.ImportDefinitions);
             }
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_accessing_export_definitions
             : InterceptingComposablePartContext
         {
-            [Test]
+            [TestMethod]
             public void It_should_pull_from_the_inner_part()
             {
                 InterceptingPart.ExportDefinitions.ShouldEqual(InterceptedPart.ExportDefinitions);
             }
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_accessing_metadata
             : InterceptingComposablePartContext
         {
-            [Test]
+            [TestMethod]
             public void It_should_pull_from_the_inner_part()
             {
                 InterceptingPart.Metadata.ShouldEqual(InterceptedPart.Metadata);
             }
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_setting_an_import
             : InterceptingComposablePartContext
         {
-            [Test]
+            [TestMethod]
             public void It_should_set_the_import_on_intercepted_part()
             {
                 InterceptedPart = MockPart.Object;
@@ -84,24 +80,25 @@ namespace MefContrib.Hosting.Interception.Tests
             }
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_retrieving_an_exported_value
             : InterceptingComposablePartContext
         {
-            [Test]
+            [TestMethod]
             public void It_should_pass_the_value_to_the_value_interceptor()
             {
                 InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
                 MockInterceptor.Verify(p => p.Intercept(interceptedOrderProcessor));
             }
 
-            [Test]
+            [TestMethod]
             public void It_should_return_the_intercepted_value()
             {
                 var retrievedOrderProcessor = InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
                 retrievedOrderProcessor.ShouldEqual(interceptingOrderProcessor);
             }
 
+            [TestInitialize]
             public override void TestSetUp()
             {
                 MockPart.Setup(p => p.GetExportedValue(OrderProcessorExportDefinition)).Returns(interceptedOrderProcessor);
@@ -114,24 +111,25 @@ namespace MefContrib.Hosting.Interception.Tests
             private readonly OrderProcessor interceptedOrderProcessor = new OrderProcessor();
         }
 
-        [TestFixture]
+        [TestClass]
         public class When_retrieving_an_exported_value_twice
             : InterceptingComposablePartContext
         {
 
-            [Test]
+            [TestMethod]
             public void It_should_only_invoke_the_interceptor_once()
             {
                 MockInterceptor.Verify(p => p.Intercept(interceptedOrderProcessor), Times.Once());
             }
 
-            [Test]
+            [TestMethod]
             public void It_should_return_the_intercepted_value()
             {
                 var retrievedOrderProcessor = InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
                 retrievedOrderProcessor.ShouldEqual(interceptingOrderProcessor);
             }
 
+            [TestInitialize]
             public override void TestSetUp()
             {
                 MockPart.Setup(p => p.GetExportedValue(OrderProcessorExportDefinition)).Returns(interceptedOrderProcessor);
@@ -158,7 +156,7 @@ namespace MefContrib.Hosting.Interception.Tests
                 InterceptingPart = new InterceptingComposablePart(InterceptedPart, MockInterceptor.Object);
             }
 
-            [SetUp]
+            [TestInitialize]
             public virtual void TestSetUp()
             {
             }

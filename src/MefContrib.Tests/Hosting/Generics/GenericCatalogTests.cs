@@ -1,16 +1,16 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Generics.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class GenericCatalogTests
     {
-        public ExportProvider ExportProvider;
+        public static ExportProvider ExportProvider;
 
-        [TestFixtureSetUp]
-        public void TestSetUp()
+        [ClassInitialize]
+        public static void TestSetUp(TestContext context)
         {
             var typeCatalog = new TypeCatalog(
                 typeof(CtorOrderProcessor),
@@ -29,73 +29,73 @@ namespace MefContrib.Hosting.Generics.Tests
             ExportProvider = provider;
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_order_processor_the_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<OrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_ctor_order_processor_the_ctor_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<CtorOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_concrete_order_processor_the_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<ConcreteOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_concrete_ctor_order_processor_the_ctor_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<ConcreteCtorOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_my_order_processor_the_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<MyOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_my_order_processor_with_setter_only_the_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<MyOrderProcessorSetterOnly>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.orderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.orderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_my_ctor_order_processor_the_ctor_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<MyCtorOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_multi_order_processor_the_multi_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<MultiOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
             
-            Assert.That(orderProcessor.OrderRepositoriesAsArray, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepositoriesAsArray.Length, Is.EqualTo(2));
+            Assert.IsNotNull(orderProcessor.OrderRepositoriesAsArray);
+            Assert.AreEqual(2, orderProcessor.OrderRepositoriesAsArray.Length);
 
-            Assert.That(orderProcessor.OrderRepositoriesAsEnumerable, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepositoriesAsEnumerable.Count(), Is.EqualTo(2));
+            Assert.IsNotNull(orderProcessor.OrderRepositoriesAsEnumerable);
+            Assert.AreEqual(2, orderProcessor.OrderRepositoriesAsEnumerable.Count());
         }
     }
 }

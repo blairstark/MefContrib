@@ -8,12 +8,12 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.ComponentModel.Composition;
     using System.Linq;
     using MefContrib.Tests;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class MefIntegrationTests
     {
-        [Test]
+        [TestMethod]
         public void Registry_should_work()
         {
             var registry =
@@ -25,7 +25,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             conventions.Count().ShouldEqual(3);
         }
 
-        [Test]
+        [TestMethod]
         public void ConventionCatalog_should_import_closed_generic()
         {
             var exportConvention =
@@ -78,7 +78,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             part.Part.Repository.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void ConventionCatalog_should_export_conventionpart()
         {
             // Setup conventions using the semantic model

@@ -1,38 +1,36 @@
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class FactoryExportDefinitionTests
     {
-        public interface IComponent {}
+        public interface IComponent { }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Cannot_pass_null_type_to_the_ctor()
         {
-            Assert.That(delegate
-            {
-                new FactoryExportDefinition(null, null, ep => null);
-            }, Throws.TypeOf<ArgumentNullException>());
+            new FactoryExportDefinition(null, null, ep => null);
         }
 
-        [Test]
+        [TestMethod]
         public void Contract_type_and_names_are_properly_set()
         {
             var exportDefinition = new FactoryExportDefinition(typeof(IComponent), "ContractName", ep => null);
-            Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
-            Assert.That(exportDefinition.RegistrationName, Is.EqualTo("ContractName"));
-            Assert.That(exportDefinition.ContractName, Is.EqualTo("ContractName"));
+            Assert.AreEqual(exportDefinition.ContractType, typeof(IComponent));
+            Assert.AreEqual(exportDefinition.RegistrationName, "ContractName");
+            Assert.AreEqual(exportDefinition.ContractName,"ContractName");
         }
 
-        [Test]
+        [TestMethod]
         public void When_passing_null_registration_name_the_contract_name_is_properly_set()
         {
             var exportDefinition = new FactoryExportDefinition(typeof(IComponent), null, ep => null);
-            Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
-            Assert.That(exportDefinition.RegistrationName, Is.Null);
-            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Hosting.Tests.FactoryExportDefinitionTests+IComponent"));
+            Assert.AreEqual(exportDefinition.ContractType, typeof(IComponent));
+            Assert.IsNull(exportDefinition.RegistrationName);
+            Assert.AreEqual("MefContrib.Hosting.Tests.FactoryExportDefinitionTests+IComponent", exportDefinition.ContractName);
         }
     }
 }

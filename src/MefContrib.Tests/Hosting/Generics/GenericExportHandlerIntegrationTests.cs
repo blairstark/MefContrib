@@ -1,17 +1,17 @@
 using System.ComponentModel.Composition.Hosting;
 using MefContrib.Hosting.Interception.Configuration;
 using MefContrib.Hosting.Interception;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Generics.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class GenericExportHandlerIntegrationTests
     {
-        public ExportProvider ExportProvider;
+        public static ExportProvider ExportProvider;
 
-        [TestFixtureSetUp]
-        public void TestSetUp()
+        [ClassInitialize]
+        public static void TestSetUp(TestContext context)
         {
             var typeCatalog = new TypeCatalog(typeof(CtorOrderProcessor), typeof(OrderProcessor), typeof(TestGenericContractRegistry));
             var cfg = new InterceptionConfiguration().AddHandler(new GenericExportHandler());
@@ -23,20 +23,20 @@ namespace MefContrib.Hosting.Generics.Tests
             ExportProvider = provider;
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_order_processor_the_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<OrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_ctor_order_processor_the_ctor_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<CtorOrderProcessor>();
-            Assert.That(orderProcessor, Is.Not.Null);
-            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+            Assert.IsNotNull(orderProcessor);
+            Assert.IsNotNull(orderProcessor.OrderRepository);
         }
     }
 }

@@ -5,17 +5,17 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class DefaultConventionContractServiceTests
     {
-        [Test]
+        [TestMethod]
         public void DefaultConventions_property_should_not_be_null_on_new_instance()
         {
             GetServiceWithDefaultConventions().DefaultConventions.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_throw_argumentnullexception_when_called_with_convention_that_is_null()
         {
             var exception =
@@ -24,7 +24,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_throw_argumentnullexception_when_called_with_member_that_is_null()
         {
             var exception =
@@ -33,7 +33,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_default_contract_name_when_match_is_available()
         {
             var member = 
@@ -53,7 +53,7 @@
             result.ShouldEqual("Foo");
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_default_contract_name_of_last_default_convention_when_match_is_available()
         {
             const string expectedContractName = "Bar";
@@ -86,7 +86,7 @@
             result.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_convention_contract_name_when_not_null()
         {
             const string contract = "Contract";
@@ -109,7 +109,7 @@
             results.ShouldEqual(contract);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_convention_contract_type_when_not_null_and_contract_name_is_null()
         {
             var convention =
@@ -131,7 +131,7 @@
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_contract_name_of_field_type_when_called_with_field_and_contract_name_and_type_are_null()
         {
             var member =
@@ -157,7 +157,7 @@
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_contract_name_of_property_type_when_called_with_property_and_contract_name_and_type_are_null()
         {
             var member =
@@ -183,7 +183,7 @@
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportContractName_should_return_type_identity_of_method_type_when_called_with_method_and_contract_name_and_type_are_null()
         {
             var member =
@@ -209,7 +209,7 @@
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_throw_argumentnullexception_when_called_with_convention_that_is_null()
         {
             var exception =
@@ -218,7 +218,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_throw_argumentnullexception_when_called_with_member_that_is_null()
         {
             var exception =
@@ -227,7 +227,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_return_type_identity_of_default_contract_type_when_match_is_available()
         {
             var member =
@@ -250,7 +250,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_return_tyoe_identity_of_default_contract_type_of_last_default_convention_when_match_is_available()
         {
             var service =
@@ -284,7 +284,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_return_type_identity_from_convention_when_not_null()
         {
             var convention =
@@ -306,7 +306,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_return_type_identify_of_field_type_when_called_with_field_member_and_convention_contract_type_is_null()
         {
             var convention =
@@ -331,7 +331,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_return_type_identify_of_property_type_when_called_with_property_member_and_convention_contract_type_is_null()
         {
             var convention =
@@ -356,7 +356,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetExportTypeIdentity_should_return_type_identify_of_method_when_called_with_method_member_and_convention_contract_type_is_null()
         {
             var convention =
@@ -381,7 +381,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_throw_argumentnullexception_when_called_with_convention_that_is_null()
         {
             var exception =
@@ -390,7 +390,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_throw_argumentnullexception_when_called_with_member_that_is_null()
         {
             var exception =
@@ -399,7 +399,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_return_default_contract_name_when_match_is_available()
         {
             var member =
@@ -419,7 +419,7 @@
             result.ShouldEqual("Foo");
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_return_default_contract_name_of_last_default_convention_when_match_is_available()
         {
             const string expectedContractName = "Bar";
@@ -452,7 +452,7 @@
             result.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_return_contract_name_from_convention_when_not_null()
         {
             const string contract = "Contract";
@@ -472,7 +472,7 @@
             result.ShouldEqual(contract);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_return_type_identity_of_convention_contract_type_when_contract_type_is_null()
         {
             var contractType = typeof(string);
@@ -496,7 +496,7 @@
             result.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_return_contract_name_for_field_type_when_called_with_field_and_contract_name_and_type_are_null()
         {
             var member =
@@ -522,7 +522,7 @@
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportContractName_should_return_contract_name_for_property_type_when_called_with_property_and_contract_name_and_type_are_null()
         {
             var member =
@@ -548,7 +548,7 @@
             results.ShouldEqual(expectedContractName);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_type_identity_of_default_contract_type_when_match_is_available()
         {
             var member =
@@ -571,7 +571,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_tyoe_identity_of_default_contract_type_of_last_default_convention_when_match_is_available()
         {
             var service =
@@ -605,7 +605,7 @@
             result.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_type_identity_of_field_type_when_called_with_field_and_contract_type_is_null()
         {
             var member =
@@ -631,7 +631,7 @@
             results.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_type_identity_of_property_type_when_called_with_property_and_contract_type_is_null()
         {
             var member =
@@ -657,7 +657,7 @@
             results.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_null_when_convention_contract_type_is_of_type_object()
         {
             var convention =
@@ -676,7 +676,7 @@
             results.ShouldBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_type_identity_of_convention_contract_type_when_contract_type_is_not_object_or_delegate()
         {
             var contractType = typeof(string);
@@ -700,7 +700,7 @@
             results.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void GetImportTypeIdentity_should_return_type_identity_of_invoke_method_when_convention_contract_type_is_delegate()
         {
             var member =
@@ -726,7 +726,7 @@
             results.ShouldEqual(expectedTypeIdentity);
         }
 
-        [Test]
+        [TestMethod]
         public void Configure_should_throw_argumentnullexception_when_called_with_null()
         {
             var service =
@@ -738,7 +738,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Configure_should_store_default_conventions_to_defaultconventions_property()
         {
             var service =

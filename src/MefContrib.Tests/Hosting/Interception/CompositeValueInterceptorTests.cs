@@ -1,12 +1,12 @@
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class CompositeValueInterceptorTests
     {
-        [Test]
+        [TestMethod]
         public void Interceptors_are_evaluated_in_order_they_are_added()
         {
             var compositeValueInterceptor = new CompositeValueInterceptor();
@@ -16,9 +16,9 @@ namespace MefContrib.Hosting.Interception.Tests
             var val = "this is a value";
             var interceptedValue = (IWrapper) compositeValueInterceptor.Intercept(val);
 
-            Assert.That(interceptedValue.GetType(), Is.EqualTo(typeof(Wrapper2)));
-            Assert.That(interceptedValue.Value.GetType(), Is.EqualTo(typeof(Wrapper1)));
-            Assert.That(((IWrapper)interceptedValue.Value).Value, Is.EqualTo(val));
+            Assert.IsInstanceOfType(interceptedValue, typeof(Wrapper2));
+            Assert.IsInstanceOfType(interceptedValue.Value, typeof(Wrapper1));
+            Assert.AreEqual(val, ((IWrapper)interceptedValue.Value).Value);
         }
 
         public interface IWrapper

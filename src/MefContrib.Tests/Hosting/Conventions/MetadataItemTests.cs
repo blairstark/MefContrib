@@ -3,12 +3,12 @@ using MefContrib.Tests;
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class MetadataItemTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_when_name_is_null()
         {
             var exception =
@@ -17,7 +17,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentoutofrangeexception_when_name_is_empty()
         {
             var exception =
@@ -26,7 +26,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_when_value_is_null()
         {
             var exception =
@@ -35,7 +35,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_if_name_is_not_identical_on_instance_being_compared_against()
         {
             var instance =
@@ -47,7 +47,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_if_value_is_no_identical_on_instance_being_compared_against()
         {
             var instance =

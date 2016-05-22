@@ -6,9 +6,9 @@
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class PartConventionBuilderTests
     {
         private PartConventionBuilder<PartConvention> conventionBuilder;
@@ -17,13 +17,13 @@
         {
         }
 
-        [SetUp]
+        [TestInitialize]
         public void Setup()
         {
             this.conventionBuilder = new PartConventionBuilder<PartConvention>();
         }
 
-        [Test]
+        [TestMethod]
         public void Exports_should_set_exports_on_convention()
         {
             var reference =
@@ -40,7 +40,7 @@
             convention.Exports.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Exports_should_throw_argument_null_exception_when_called_with_null()
         {
             var exception =
@@ -49,7 +49,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Exports_should_return_reference_to_itself()
         {
             var reference =
@@ -59,7 +59,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void Imports_should_set_imports_on_convention()
         {
             var reference =
@@ -76,7 +76,7 @@
             convention.Imports.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Imports_should_throw_argument_null_exception_when_called_with_null()
         {
             var exception =
@@ -85,7 +85,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Imports_should_return_reference_to_itself()
         {
             var reference =
@@ -95,7 +95,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeShared_should_set_creation_policy_on_convention_to_shared()
         {
             this.conventionBuilder
@@ -107,7 +107,7 @@
             convention.CreationPolicy.ShouldEqual(CreationPolicy.Shared);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeShared_should_return_reference_to_itself()
         {
             var reference =
@@ -117,7 +117,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeNonShared_should_set_creation_policy_on_convention_to_non_shared()
         {
             this.conventionBuilder
@@ -129,7 +129,7 @@
             convention.CreationPolicy.ShouldEqual(CreationPolicy.NonShared);
         }
 
-        [Test]
+        [TestMethod]
         public void MakeNonShared_should_return_reference_to_itself()
         {
             var reference =
@@ -139,7 +139,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void ForTypesMatching_should_set_condition_on_convention()
         {
             this.conventionBuilder
@@ -157,7 +157,7 @@
             matchedTypes.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void ForTypesMatching_should_throw_argument_null_exception_if_called_with_null()
         {
             var exception =
@@ -166,7 +166,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void ForTypesMatching_should_return_reference_to_itself()
         {
             var reference =
@@ -176,7 +176,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void GetBuiltInstance_should_not_return_null_on_new_builder()
         {
             var convention =
@@ -186,7 +186,7 @@
             convention.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_return_reference_to_itself_when_called_with_name_and_value()
         {
             var reference =
@@ -196,7 +196,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_throw_argument_null_exception_when_called_with_null_name_and_value()
         {
             var exception =
@@ -205,7 +205,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_throw_argument_out_of_range_exception_when_called_with_empty_name_and_value()
         {
             var exception =
@@ -214,7 +214,7 @@
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_throw_argument_null_exception_when_called_with_name_and_null_value()
         {
             var exception =
@@ -223,7 +223,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_add_metadata_to_convention()
         {
             this.conventionBuilder
@@ -238,7 +238,7 @@
             convention.Metadata.First().Equals(expectedMetadata).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_return_reference_to_itself_when_called_with_anonymous_type()
         {
             var reference =
@@ -248,7 +248,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_throw_argument_null_exception_when_called_with_null_anonymous_type()
         {
             var exception =
@@ -257,7 +257,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_set_metadata_on_convention_from_anonymous_type()
         {
             this.conventionBuilder
@@ -272,7 +272,7 @@
             convention.Metadata.First().Equals(expectedMetadata).ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_return_reference_to_itself_when_called_with_a_function()
         {
             var reference =
@@ -282,7 +282,7 @@
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_throw_argument_null_exception_when_called_with_null()
         {
             var exception =
@@ -291,7 +291,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_throw_argument_null_exception_when_called_with_function_that_returns_null()
         {
             var exception =
@@ -300,7 +300,7 @@
             exception.ShouldBeOfType<InvalidOperationException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddMetadata_should_set_metadata_on_convention_when_called_with_a_function()
         {
             this.conventionBuilder

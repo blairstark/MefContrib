@@ -1,14 +1,14 @@
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Microsoft.Practices.Unity;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Integration.Unity.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ResolutionOrderTests
     {
-        [Test]
+        [TestMethod]
         public void Unity_registered_components_take_precedence_over_MEF_registered_components_if_querying_for_a_single_component_registered_in_both_containers()
         {
             // Setup
@@ -22,20 +22,20 @@ namespace MefContrib.Integration.Unity.Tests
             // Reset count
             Singleton.Count = 0;
 
-            Assert.That(Singleton.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, Singleton.Count);
             var singleton = unityContainer.Resolve<ISingleton>();
 
-            Assert.That(singleton, Is.Not.Null);
-            Assert.That(Singleton.Count, Is.EqualTo(1));
+            Assert.IsNotNull(singleton);
+            Assert.AreEqual(1, Singleton.Count);
 
             var mef = unityContainer.Resolve<CompositionContainer>();
             var mefSingleton = mef.GetExportedValue<ISingleton>();
 
-            Assert.That(Singleton.Count, Is.EqualTo(1));
-            Assert.That(singleton, Is.SameAs(mefSingleton));
+            Assert.AreEqual(1, Singleton.Count);
+            Assert.AreSame(singleton, mefSingleton);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_MEF_for_a_multiple_components_registered_in_both_containers_all_instances_are_returned()
         {
             // Setup
@@ -49,11 +49,11 @@ namespace MefContrib.Integration.Unity.Tests
             // Reset count
             Singleton.Count = 0;
 
-            Assert.That(Singleton.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, Singleton.Count);
 
             var mef = unityContainer.Resolve<CompositionContainer>();
             mef.GetExportedValues<ISingleton>();
-            Assert.That(Singleton.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, Singleton.Count);
         }
 
         

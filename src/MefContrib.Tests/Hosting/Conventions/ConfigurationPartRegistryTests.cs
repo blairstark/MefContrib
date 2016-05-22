@@ -3,48 +3,44 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using MefContrib.Hosting.Conventions.Configuration;
 using MefContrib.Hosting.Conventions.Configuration.Section;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Conventions.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ConfigurationPartRegistryTests
     {
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Invoking_ctor_with_null_string_causes_an_exception()
         {
-            Assert.That(delegate
-            {
-                new ConfigurationPartRegistry((string)null);
-            }, Throws.InstanceOf<ArgumentNullException>());
+            new ConfigurationPartRegistry((string)null);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Invoking_ctor_with_null_section_causes_an_exception()
         {
-            Assert.That(delegate
-            {
-                new ConfigurationPartRegistry((ConventionConfigurationSection)null);
-            }, Throws.InstanceOf<ArgumentNullException>());
+            new ConfigurationPartRegistry((ConventionConfigurationSection)null);
         }
 
-        [Test]
+        [TestMethod]
         public void FakePart_is_exported_using_xml_configuration()
         {
             var registry = new ConfigurationPartRegistry("mef.configuration");
             var catalog = new ConventionCatalog(registry);
 
             var parts = new List<ComposablePartDefinition>(catalog.Parts);
-            Assert.That(parts.Count, Is.Not.EqualTo(0));
+            Assert.AreNotEqual(0, parts.Count);
 
             var exports = new List<ExportDefinition>(parts[0].ExportDefinitions);
-            Assert.That(exports.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, exports.Count);
 
             var imports = new List<ImportDefinition>(parts[0].ImportDefinitions);
-            Assert.That(imports.Count, Is.EqualTo(1));
-            Assert.That(imports[0].ContractName, Is.EqualTo("somestring"));
-            Assert.That(imports[0].IsRecomposable, Is.EqualTo(false));
-            Assert.That(imports[0].IsPrerequisite, Is.EqualTo(false));
+            Assert.AreEqual(1, imports.Count);
+            Assert.AreEqual("somestring", imports[0].ContractName);
+            Assert.IsFalse(imports[0].IsRecomposable);
+            Assert.IsFalse(imports[0].IsPrerequisite);
         }
     }
 }

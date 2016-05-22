@@ -3,11 +3,11 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class TypeDefaultConventionBuilderTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_if_called_with_null()
         {
             var exception =
@@ -16,7 +16,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_persist_target_type_to_target_type_property()
         {
             var builder =
@@ -28,7 +28,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.TargetType.ShouldBeOfType<string>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_return_reference_to_itself()
         {
             const string contractName = "Contract";
@@ -42,7 +42,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(builder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_throw_argumentnullexception_if_called_with_null()
         {
             var builder =
@@ -54,7 +54,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_throw_argumentoutofrangeexception_if_called_wiht_empty_string()
         {
             var builder =
@@ -66,7 +66,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void ContractName_should_persist_name_in_contract_name_property()
         {
             const string contractName = "Contract";
@@ -83,7 +83,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.ContractName.ShouldEqual(contractName);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_return_reference_to_itself()
         {
             var builder =
@@ -95,7 +95,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             reference.ShouldBeSameAs(builder);
         }
 
-        [Test]
+        [TestMethod]
         public void ContractType_should_persist_type_in_contract_type_property()
         {
             var builder =

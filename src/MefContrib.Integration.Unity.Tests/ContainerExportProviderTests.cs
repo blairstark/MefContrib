@@ -6,14 +6,14 @@ using System.Reflection;
 using MefContrib.Containers;
 using MefContrib.Integration.Unity.Extensions;
 using Microsoft.Practices.Unity;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Integration.Unity.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ContainerExportProviderTests
     {
-        [Test]
+        [TestMethod]
         public void ExportProviderResolvesServiceRegisteredByTypeTest()
         {
             // Setup
@@ -25,11 +25,11 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
 
             var component = provider.GetExportedValue<IUnityOnlyComponent>();
-            Assert.That(component, Is.Not.Null);
-            Assert.That(component.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            Assert.IsNotNull(component);
+            Assert.IsInstanceOfType(component, typeof(UnityOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void ExportProviderResolvesServicesRegisteredByTypeTest()
         {
             // Setup
@@ -42,14 +42,14 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("b");
 
             var components = provider.GetExports<IUnityOnlyComponent>();
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(2));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(2, components.Count());
 
-            Assert.That(components.Select(t => t.Value).OfType<UnityOnlyComponent1>().Count(), Is.EqualTo(1));
-            Assert.That(components.Select(t => t.Value).OfType<UnityOnlyComponent2>().Count(), Is.EqualTo(1));
+            Assert.AreEqual(1, components.Select(t => t.Value).OfType<UnityOnlyComponent1>().Count());
+            Assert.AreEqual(1, components.Select(t => t.Value).OfType<UnityOnlyComponent2>().Count());
         }
 
-        [Test]
+        [TestMethod]
         public void ExportProviderResolvesServiceRegisteredByTypeAndRegistrationNameTest()
         {
             // Setup
@@ -61,11 +61,11 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("unityComponent2");
 
             var component = provider.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
-            Assert.That(component, Is.Not.Null);
-            Assert.That(component.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
+            Assert.IsNotNull(component);
+            Assert.IsInstanceOfType(component, typeof(UnityOnlyComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveLazyTypeRegisteredInUnityTest()
         {
             // Setup
@@ -79,15 +79,15 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
 
             var lazyUnityComponent = container.GetExport<IUnityOnlyComponent>();
-            Assert.That(lazyUnityComponent, Is.Not.Null);
-            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.IsNotNull(lazyUnityComponent);
+            Assert.AreEqual(0, UnityOnlyComponent1.InstanceCount);
 
-            Assert.That(lazyUnityComponent.Value, Is.Not.Null);
-            Assert.That(lazyUnityComponent.Value.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
-            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(1));
+            Assert.IsNotNull(lazyUnityComponent.Value);
+            Assert.IsInstanceOfType(lazyUnityComponent.Value, typeof(UnityOnlyComponent1));
+            Assert.AreEqual(1, UnityOnlyComponent1.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveLazyTypesRegisteredInUnityTest()
         {
             // Setup
@@ -102,16 +102,17 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("a");
 
             var lazyUnityComponent = container.GetExports<IUnityOnlyComponent>().ToList();
-            Assert.That(lazyUnityComponent, Is.Not.Null);
-            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.IsNotNull(lazyUnityComponent);
+            Assert.AreEqual(0, UnityOnlyComponent1.InstanceCount);
 
-            Assert.That(lazyUnityComponent, Is.Not.Null);
-            Assert.That(lazyUnityComponent[0].Value, Is.Not.Null);
-            Assert.That(lazyUnityComponent[1].Value, Is.Not.Null);
-            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(1));
+            Assert.IsNotNull(lazyUnityComponent);
+            Assert.IsNotNull(lazyUnityComponent[0].Value);
+            Assert.IsNotNull(lazyUnityComponent[1].Value);
+            Assert.AreEqual(1, UnityOnlyComponent1.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ImportCardinalityMismatchException))]
         public void MefCannotResolveTypesRegisteredInUnityBeforeTrackingExtensionIsAddedTest()
         {
             // Setup
@@ -126,13 +127,11 @@ namespace MefContrib.Integration.Unity.Tests
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var container = new CompositionContainer(assemblyCatalog, provider);
 
-            Assert.That(delegate
-            {
-                container.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
-            }, Throws.TypeOf<ImportCardinalityMismatchException>());
+            container.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
+         
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveTypesRegisteredInUnityAfterTrackingExtensionIsAddedTest()
         {
             // Setup
@@ -151,26 +150,28 @@ namespace MefContrib.Integration.Unity.Tests
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             var component = container.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
-            Assert.That(component, Is.Not.Null);
-            Assert.That(component.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
+            Assert.IsNotNull(component);
+            Assert.IsInstanceOfType(component, typeof(UnityOnlyComponent2));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
         public void CannotPassNullInstanceToTheContainerExportProviderConstructorTest()
         {
-            Assert.That(delegate
-            {
-                new ContainerExportProvider(null);
-            }, Throws.TypeOf<ArgumentNullException>());
+
+            new ContainerExportProvider(null);
+
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
         public void CannotPassNullUnityInstanceToTheUnityContainerAdapterConstructorTest()
         {
-            Assert.That(delegate
-            {
-                new UnityContainerAdapter(null);
-            }, Throws.TypeOf<ArgumentNullException>());
+
+            new UnityContainerAdapter(null);
+
         }
 
         #region Composing with two providers
@@ -193,7 +194,7 @@ namespace MefContrib.Integration.Unity.Tests
             public B ThingB { get; private set; }
         }
 
-        [Test]
+        [TestMethod]
         public void ComposeWithTwoContainerExportProvidersTest()
         {
             var unityContainer1 = new UnityContainer();

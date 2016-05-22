@@ -5,11 +5,11 @@ namespace MefContrib.Hosting.Conventions.Tests
 
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class AssemblyTypeScannerTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_when_called_with_null()
         {
             var exception =
@@ -18,7 +18,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_store_assembly_reference_in_assembly_property()
         {
             var assembly =
@@ -35,7 +35,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             scanner.Assembly.ShouldBeSameAs(assembly);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_return_all_types_in_assembly_that_matches_predicate()
         {
             var assembly =
@@ -54,7 +54,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             types.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_not_return_non_public_types()
         {
             var assembly =
@@ -73,7 +73,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             types.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_not_return_abstract_types()
         {
             var assembly =
@@ -92,7 +92,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             types.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_only_return_class_types()
         {
             var assembly =
