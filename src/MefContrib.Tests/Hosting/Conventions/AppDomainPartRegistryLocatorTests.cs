@@ -2,12 +2,12 @@ namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
     using MefContrib.Tests;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class AppDomainPartRegistryLocatorTests
     {
-        [Test]
+        [TestMethod]
         public void Should_throw_argumentnullexception_when_instantiated_with_null()
         {
             // Arrange, Act

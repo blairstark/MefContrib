@@ -3,12 +3,12 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class ImportRegistryTests
     {
-        [Test]
+        [TestMethod]
         public void Import_should_return_instance_of_importconventionbuilder_for_importconvention_type()
         {
             var registry =
@@ -20,7 +20,7 @@
             result.ShouldBeOfType<ImportConventionBuilder<ImportConvention>>();
         }
 
-        [Test]
+        [TestMethod]
         public void Import_of_tconvention_should_return_instance_of_importconventionbuilder_for_tconvention_type()
         {
             var registry =

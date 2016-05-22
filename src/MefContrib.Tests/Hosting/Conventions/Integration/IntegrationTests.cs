@@ -7,12 +7,12 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture, Category("Integration")]
+    [TestClass]
     public class IntegrationTests
     {
-        [Test]
+        [TestMethod, TestCategory("Integration")]
         public void ConventionCatalog_should_support_constructor_injection()
         {
             var catalog =
@@ -33,7 +33,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             instance.Imports[0].Widgets.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod, TestCategory("Integration")]
         public void ConventionCatalog_should_support_type_exports()
         {
             var registry = new PartRegistry();
@@ -62,7 +62,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             instance.Imports.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod, TestCategory("Integration")]
         public void ConventionCatalog_should_support_property_exports()
         {
             var registry = new PartRegistry();
@@ -80,10 +80,10 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 new CompositionContainer(catalog);
 
             var exportedValue = container.GetExportedValue<string>("V1");
-            Assert.That(exportedValue, Is.EqualTo("this is some text"));
+            Assert.AreEqual("this is some text", exportedValue);
         }
 
-        [Test]
+        [TestMethod, TestCategory("Integration")]
         public void ConventionCatalog_should_support_field_exports()
         {
             var registry = new PartRegistry();
@@ -101,10 +101,10 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 new CompositionContainer(catalog);
 
             var exportedValue = container.GetExportedValue<int>("V1");
-            Assert.That(exportedValue, Is.EqualTo(1234));
+            Assert.AreEqual(1234, exportedValue);
         }
 
-        [Test]
+        [TestMethod, TestCategory("Integration")]
         public void ConventionCatalog_should_support_property_imports()
         {
             var registry = new PartRegistry();
@@ -132,7 +132,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             exportedValue.TextValue.ShouldEqual("this is some text");
         }
 
-        [Test]
+        [TestMethod, TestCategory("Integration")]
         public void ConventionCatalog_should_support_field_imports()
         {
             var registry = new PartRegistry();

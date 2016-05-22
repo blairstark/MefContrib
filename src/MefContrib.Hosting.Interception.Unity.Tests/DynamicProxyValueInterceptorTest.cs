@@ -4,18 +4,19 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using Microsoft.Practices.Unity;
+    using Microsoft.Practices.Unity.InterceptionExtension;
     using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Hosting.Interception.Unity;
     using MefContrib.Tests;
-    using NUnit.Framework;
-    using Microsoft.Practices.Unity.InterceptionExtension;
-    using Microsoft.Practices.Unity;
-    [TestFixture]
+    using Microsoft.VisualStudio.TestTools.UnitTesting; 
+
+    [TestClass]
     public class InterfaceInterceptorTests
     {
         private CompositionContainer container;
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetUp()
         {
             var innerCatalog = new TypeCatalog(typeof(Customer));
@@ -29,7 +30,7 @@
             container = new CompositionContainer(catalog);
         }
 
-        [Test]
+        [TestMethod]
         public void When_setting_name_on_the_customer_it_should_error()
         {
             var customer = container.GetExportedValue<ICustomer>();

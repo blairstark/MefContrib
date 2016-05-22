@@ -4,15 +4,16 @@
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using global::Castle.DynamicProxy;
+    using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Tests;
-    using NUnit.Framework;
-    using Configuration;
-    [TestFixture]
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
     public class DynamicProxyValueInterceptorTests
     {
         private CompositionContainer container;
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetUp()
         {
             var innerCatalog = new TypeCatalog(typeof(Customer));
@@ -27,7 +28,7 @@
             container = new CompositionContainer(catalog);
         }
 
-        [Test]
+        [TestMethod]
         public void When_setting_name_on_the_customer_it_should_error()
         {
             var customer = container.GetExportedValue<ICustomer>();

@@ -2,12 +2,12 @@ using MefContrib.Tests;
 
 namespace MefContrib.Hosting.Conventions.Tests
 {
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class PartConventionTests
     {
-        [Test]
+        [TestMethod]
         public void Export_should_not_be_null_on_new_instance()
         {
             var instance =
@@ -16,7 +16,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             instance.Exports.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Import_should_not_be_null_on_new_instance()
         {
             var instance =
@@ -25,7 +25,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             instance.Imports.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Metadata_should_not_be_null_on_new_instance()
         {
             var instance =

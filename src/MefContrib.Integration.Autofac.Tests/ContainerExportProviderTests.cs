@@ -7,12 +7,12 @@ namespace MefContrib.Integration.Autofac.Tests
     using System.Reflection;
     using global::Autofac;
     using MefContrib.Containers;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class ContainerExportProviderTests
     {
-        [Test]
+        [TestMethod]
         public void ExportProviderResolvesServiceRegisteredByTypeTest()
         {
             // Setup
@@ -23,11 +23,11 @@ namespace MefContrib.Integration.Autofac.Tests
             var provider = new ContainerExportProvider(adapter);
 
             var component = provider.GetExportedValue<IAutofacOnlyComponent>();
-            Assert.That(component, Is.Not.Null);
-            Assert.That(component.GetType(), Is.EqualTo(typeof(AutofacOnlyComponent1)));
+            Assert.IsNotNull(component);
+            Assert.IsInstanceOfType(component, typeof(AutofacOnlyComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void ExportProviderResolvesServicesRegisteredByTypeTest()
         {
             // Setup
@@ -39,14 +39,14 @@ namespace MefContrib.Integration.Autofac.Tests
             var provider = new ContainerExportProvider(adapter);
 
             var components = provider.GetExports<IAutofacOnlyComponent>();
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(2));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(2, components.Count());
 
-            Assert.That(components.Select(t => t.Value).OfType<AutofacOnlyComponent1>().Count(), Is.EqualTo(1));
-            Assert.That(components.Select(t => t.Value).OfType<AutofacOnlyComponent2>().Count(), Is.EqualTo(1));
+            Assert.AreEqual(1, components.Select(t => t.Value).OfType<AutofacOnlyComponent1>().Count());
+            Assert.AreEqual(1, components.Select(t => t.Value).OfType<AutofacOnlyComponent2>().Count());
         }
 
-        [Test]
+        [TestMethod]
         public void ExportProviderResolvesServiceRegisteredByTypeAndRegistrationNameTest()
         {
             // Setup
@@ -58,11 +58,11 @@ namespace MefContrib.Integration.Autofac.Tests
             var provider = new ContainerExportProvider(adapter);
 
             var component = provider.GetExportedValue<IAutofacOnlyComponent>("autofacComponent2");
-            Assert.That(component, Is.Not.Null);
-            Assert.That(component.GetType(), Is.EqualTo(typeof(AutofacOnlyComponent2)));
+            Assert.IsNotNull(component);
+            Assert.IsInstanceOfType(component, typeof(AutofacOnlyComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveLazyTypeRegisteredInAutofacTest()
         {
             // Setup
@@ -77,15 +77,15 @@ namespace MefContrib.Integration.Autofac.Tests
             AutofacOnlyComponent1.InstanceCount = 0;
 
             var lazyAutofacComponent = container.GetExport<IAutofacOnlyComponent>();
-            Assert.That(lazyAutofacComponent, Is.Not.Null);
-            Assert.That(AutofacOnlyComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.IsNotNull(lazyAutofacComponent);
+            Assert.AreEqual(0, AutofacOnlyComponent1.InstanceCount);
 
-            Assert.That(lazyAutofacComponent.Value, Is.Not.Null);
-            Assert.That(lazyAutofacComponent.Value.GetType(), Is.EqualTo(typeof(AutofacOnlyComponent1)));
-            Assert.That(AutofacOnlyComponent1.InstanceCount, Is.EqualTo(1));
+            Assert.IsNotNull(lazyAutofacComponent.Value);
+            Assert.IsInstanceOfType(lazyAutofacComponent.Value, typeof(AutofacOnlyComponent1));
+            Assert.AreEqual(1, AutofacOnlyComponent1.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveLazyTypesRegisteredInAutofacTest()
         {
             // Setup
@@ -101,16 +101,16 @@ namespace MefContrib.Integration.Autofac.Tests
             AutofacOnlyComponent1.InstanceCount = 0;
 
             var lazyAutofacComponent = container.GetExports<IAutofacOnlyComponent>().ToList();
-            Assert.That(lazyAutofacComponent, Is.Not.Null);
-            Assert.That(AutofacOnlyComponent1.InstanceCount, Is.EqualTo(0));
+            Assert.IsNotNull(lazyAutofacComponent);
+            Assert.AreEqual(0, AutofacOnlyComponent1.InstanceCount);
 
-            Assert.That(lazyAutofacComponent, Is.Not.Null);
-            Assert.That(lazyAutofacComponent[0].Value, Is.Not.Null);
-            Assert.That(lazyAutofacComponent[1].Value, Is.Not.Null);
-            Assert.That(AutofacOnlyComponent1.InstanceCount, Is.EqualTo(1));
+            Assert.IsNotNull(lazyAutofacComponent);
+            Assert.IsNotNull(lazyAutofacComponent[0].Value);
+            Assert.IsNotNull(lazyAutofacComponent[1].Value);
+            Assert.AreEqual(1, AutofacOnlyComponent1.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefCanResolveTypesRegisteredInAutofacAfterTrackingExtensionIsAddedTest()
         {
             // Setup
@@ -125,26 +125,27 @@ namespace MefContrib.Integration.Autofac.Tests
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             var component = container.GetExportedValue<IAutofacOnlyComponent>("autofacComponent2");
-            Assert.That(component, Is.Not.Null);
-            Assert.That(component.GetType(), Is.EqualTo(typeof(AutofacOnlyComponent2)));
+            Assert.IsNotNull(component);
+            Assert.IsInstanceOfType(component, typeof(AutofacOnlyComponent2));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void CannotPassNullInstanceToTheContainerExportProviderConstructorTest()
         {
-            Assert.That(delegate
-            {
+            
                 new ContainerExportProvider(null);
-            }, Throws.TypeOf<ArgumentNullException>());
+          
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
         public void CannotPassNullAutofacInstanceToTheAutofacContainerAdapterConstructorTest()
         {
-            Assert.That(delegate
-            {
+         
                 new AutofacContainerAdapter(null);
-            }, Throws.TypeOf<ArgumentNullException>());
+          
         }
 
         #region Composing with two providers
@@ -167,7 +168,7 @@ namespace MefContrib.Integration.Autofac.Tests
             public B ThingB { get; private set; }
         }
 
-        [Test]
+        [TestMethod]
         public void ComposeWithTwoContainerExportProvidersTest()
         {
             var builder1 = new ContainerBuilder();

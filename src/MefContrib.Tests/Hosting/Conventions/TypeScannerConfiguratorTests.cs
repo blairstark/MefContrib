@@ -8,12 +8,12 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class TypeScannerConfiguratorTests
     {
-        [Test]
+        [TestMethod]
         public void Scanner_should_throw_argumentnullexception_when_called_with_null()
         {
             var configurator =
@@ -25,7 +25,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Scanner_should_return_reference_to_same_configurator()
         {
             var configurator =
@@ -37,7 +37,7 @@
             reference.ShouldBeSameAs(configurator);
         }
 
-        [Test]
+        [TestMethod]
         public void Scanner_should_add_scanner_to_configurator()
         {
             var configurator =
@@ -54,7 +54,7 @@
             results.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_throw_argumentnullexception_when_called_with_null_assembly()
         {
             var configurator =
@@ -66,7 +66,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_return_reference_to_same_configurator_when_called_with_assembly()
         {
             var configurator =
@@ -78,7 +78,7 @@
             reference.ShouldBeSameAs(configurator);
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_throw_argumentnullexception_when_called_with_null_path()
         {
             var configurator =
@@ -90,7 +90,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_return_reference_to_same_configurator_when_called_with_path()
         {
             using (var factory = new AssemblyFactory())
@@ -108,7 +108,7 @@
             }
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_throw_filenotfoundexception_when_called_with_invalid_path()
         {
             var configurator =
@@ -123,7 +123,7 @@
             exception.ShouldBeOfType<FileNotFoundException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_throw_argumentnullexception_when_called_with_null_expression()
         {
             var configurator =
@@ -135,7 +135,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_return_reference_to_same_configurator_when_called_with_expression()
         {
             var configurator =
@@ -147,7 +147,7 @@
             reference.ShouldBeSameAs(configurator);
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_add_scanner_to_configurator_when_called_with_assembly()
         {
             using (var factory = new AssemblyFactory())
@@ -177,7 +177,7 @@
             }
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_add_scanner_to_configurator_when_called_with_path()
         {
             using (var factory = new AssemblyFactory())
@@ -207,7 +207,7 @@
             }
         }
 
-        [Test]
+        [TestMethod]
         public void Assembly_should_add_scanner_to_configurator_when_called_with_expression()
         {
             var configurator =
@@ -224,7 +224,7 @@
             results.Count().ShouldEqual(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Directory_should_throw_argumentnullexception_when_called_with_null_path()
         {
             var configurator =
@@ -236,7 +236,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Directory_should_throw_argumentoutofrangeexcetion_when_called_with_empty_path()
         {
             var configurator =
@@ -248,7 +248,7 @@
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Directory_should_throw_directorynotfoundexception_when_called_with_invalid_path()
         {
             var invalidDirectoryPath =
@@ -264,7 +264,7 @@
             exception.ShouldBeOfType<DirectoryNotFoundException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Directory_should_return_reference_to_same_configurator()
         {
             var configurator =
@@ -276,7 +276,7 @@
             reference.ShouldBeSameAs(configurator);
         }
 
-        [Test]
+        [TestMethod]
         public void Directory_should_identify_types_in_each_assembly_found_in_directory_specified_by_path()
         {
             using (var factory = new AssemblyFactory())
@@ -299,7 +299,7 @@
             }
         }
 
-        [Test]
+        [TestMethod]
         public void Types_should_throw_argumentnullexception_when_called_with_null_enumerable()
         {
             var configurator =
@@ -311,7 +311,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Types_should_throw_argumentnullexception_when_called_with_null_condition()
         {
             var configurator =
@@ -323,7 +323,7 @@
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Types_should_return_reference_to_same_configurator_when_called_with_enumerable()
         {
             var configurator =
@@ -335,7 +335,7 @@
             reference.ShouldBeSameAs(configurator);
         }
 
-        [Test]
+        [TestMethod]
         public void Types_should_return_reference_to_same_configurator_when_called_with_function()
         {
             var configurator =
@@ -347,7 +347,7 @@
             reference.ShouldBeSameAs(configurator);
         }
 
-        [Test]
+        [TestMethod]
         public void Types_should_identify_types_passed_in_as_argument_when_called_with_enumerable()
         {
             var configurator =
@@ -364,7 +364,7 @@
             results.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Types_should_identify_types_passed_in_as_argument_when_called_with_expression()
         {
             var configurator =
@@ -381,7 +381,7 @@
             results.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypeScanner_should_return_aggregatedtypescanner_when_no_scanners_have_been_added()
         {
             var configurator =

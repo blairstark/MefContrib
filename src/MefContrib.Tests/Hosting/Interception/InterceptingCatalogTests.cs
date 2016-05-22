@@ -4,16 +4,16 @@ using System.ComponentModel.Composition.Hosting;
 using MefContrib.Hosting.Interception.Configuration;
 using MefContrib.Tests;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class InterceptingCatalogTests
     {
         private CompositionContainer container;
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetUp()
         {
             var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2), typeof(Part3));
@@ -26,25 +26,21 @@ namespace MefContrib.Hosting.Interception.Tests
             container = new CompositionContainer(catalog);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_should_throw_argument_null_exception_if_called_with_null_catalog()
         {
-            Assert.That(delegate
-            {
-                new InterceptingCatalog(null, new InterceptionConfiguration());
-            }, Throws.TypeOf<ArgumentNullException>());
+            new InterceptingCatalog(null, new InterceptionConfiguration());
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_should_throw_argument_null_exception_if_called_with_null_configuration()
         {
-            Assert.That(delegate
-            {
-                new InterceptingCatalog(new TypeCatalog(typeof (Part1)), null);
-            }, Throws.TypeOf<ArgumentNullException>());
+            new InterceptingCatalog(new TypeCatalog(typeof(Part1)), null);
         }
-        
-        [Test]
+
+        [TestMethod]
         public void When_querying_for_a_part_it_should_return_an_intercepting_part_definition()
         {
             var innerCatalog = new TypeCatalog(typeof(Logger));
@@ -56,7 +52,7 @@ namespace MefContrib.Hosting.Interception.Tests
             partDefinition.ShouldBeOfType<InterceptingComposablePartDefinition>();
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_part_not_being_intercepted_it_should_return_original_part_definition()
         {
             var innerCatalog = new TypeCatalog(typeof(Logger));
@@ -67,32 +63,32 @@ namespace MefContrib.Hosting.Interception.Tests
             partDefinition.ShouldNotBeOfType<InterceptingComposablePartDefinition>();
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_return_non_intercepted_value_for_part1()
         {
             var part = container.GetExportedValue<IPart>();
-            Assert.That(part.GetType(), Is.EqualTo(typeof(Part1)));
+            Assert.IsInstanceOfType(part, typeof(Part1));
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_return_an_intercepted_value_for_part2()
         {
             var part = container.GetExportedValue<IPart>("part2");
-            Assert.That(part.GetType(), Is.EqualTo(typeof(PartWrapper)));
-            Assert.That(((PartWrapper)part).Inner.GetType(), Is.EqualTo(typeof(Part2)));
+            Assert.IsInstanceOfType(part, typeof(PartWrapper));
+            Assert.IsInstanceOfType(((PartWrapper)part).Inner, typeof(Part2));
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_return_a_part_with_properly_set_name()
         {
             var part1 = container.GetExportedValue<IPart>();
             var part2 = container.GetExportedValue<IPart>("part2");
 
-            Assert.That(part1.Name, Is.EqualTo("Name property is set be the interceptor."));
-            Assert.That(part2.Name, Is.EqualTo("Name property is set be the interceptor."));
+            Assert.AreEqual("Name property is set be the interceptor.", part1.Name);
+            Assert.AreEqual("Name property is set be the interceptor.", part2.Name);
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_return_a_part_with_respect_to_its_creation_policy()
         {
             Part1.InstanceCount = 0;
@@ -103,19 +99,19 @@ namespace MefContrib.Hosting.Interception.Tests
             var part31 = container.GetExportedValue<IPart>("part3");
             var part32 = container.GetExportedValue<IPart>("part3");
 
-            Assert.That(part11, Is.Not.Null);
-            Assert.That(part12, Is.Not.Null);
-            Assert.That(part31, Is.Not.Null);
-            Assert.That(part32, Is.Not.Null);
+            Assert.IsNotNull(part11);
+            Assert.IsNotNull(part12);
+            Assert.IsNotNull(part31);
+            Assert.IsNotNull(part32);
 
-            Assert.That(part11, Is.SameAs(part12));
-            Assert.That(part31, Is.Not.SameAs(part32));
+            Assert.AreSame(part11, part12);
+            Assert.AreNotSame(part31, part32);
 
-            Assert.That(Part1.InstanceCount, Is.EqualTo(1));
-            Assert.That(Part3.InstanceCount, Is.EqualTo(2));
+            Assert.AreEqual(1, Part1.InstanceCount);
+            Assert.AreEqual(2, Part3.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_filter_out_parts()
         {
             var innerCatalog = new TypeCatalog(typeof(Part0), typeof(Part1), typeof(Part2), typeof(Part3));
@@ -125,11 +121,11 @@ namespace MefContrib.Hosting.Interception.Tests
             container = new CompositionContainer(catalog);
 
             var parts = container.GetExportedValues<IPart>();
-            Assert.That(parts.Count(), Is.EqualTo(1));
-            Assert.That(parts.First().GetType(), Is.EqualTo(typeof(Part0)));
+            Assert.AreEqual(1, parts.Count());
+            Assert.IsInstanceOfType(parts.First(), typeof(Part0));
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_call_Initialize_on_a_given_export_handlers()
         {
             var innerCatalog = new TypeCatalog();
@@ -139,11 +135,11 @@ namespace MefContrib.Hosting.Interception.Tests
             var cfg = new InterceptionConfiguration()
                 .AddHandler(exportHandlerMock.Object);
             var catalog = new InterceptingCatalog(innerCatalog, cfg);
-            Assert.That(catalog, Is.Not.Null);
+            Assert.IsNotNull(catalog);
             exportHandlerMock.Verify();
         }
 
-        [Test]
+        [TestMethod]
         public void Catalog_should_call_Initialize_on_a_given_part_handlers()
         {
             var innerCatalog = new TypeCatalog();
@@ -153,11 +149,11 @@ namespace MefContrib.Hosting.Interception.Tests
             var cfg = new InterceptionConfiguration()
                 .AddHandler(partHandlerMock.Object);
             var catalog = new InterceptingCatalog(innerCatalog, cfg);
-            Assert.That(catalog, Is.Not.Null);
+            Assert.IsNotNull(catalog);
             partHandlerMock.Verify();
         }
 
-        [Test]
+        [TestMethod]
         public void Disposing_catalog_should_dispose_parts_implementing_dispose_pattern()
         {
             var innerCatalog = new TypeCatalog(typeof(DisposablePart));
@@ -170,9 +166,9 @@ namespace MefContrib.Hosting.Interception.Tests
             partDefinition.ShouldBeOfType<InterceptingComposablePartDefinition>();
 
             var part = container.GetExportedValueOrDefault<DisposablePart>();
-            Assert.That(part.IsDisposed, Is.False);
+            Assert.IsFalse(part.IsDisposed);
             container.Dispose();
-            Assert.That(part.IsDisposed, Is.True);
+            Assert.IsTrue(part.IsDisposed);
         }
     }
 }

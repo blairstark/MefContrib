@@ -2,174 +2,160 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Generics.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class GenericTypeCatalogTests
     {
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void Passing_open_generic_type_as_the_exporting_member_causes_an_exception()
         {
-            Assert.That(() =>
-            {
-                new GenericTypeCatalog(typeof(Service1<>));
-            }, Throws.InstanceOf<ArgumentException>());
+            new GenericTypeCatalog(typeof(Service1<>));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void Passing_closed_generic_type_as_the_contract_type_causes_an_exception()
         {
-            Assert.That(() =>
-            {
-                new GenericTypeCatalog(typeof(Service1<Customer>), typeof(IService<Customer>));
-            }, Throws.InstanceOf<ArgumentException>());
+            new GenericTypeCatalog(typeof(Service1<Customer>), typeof(IService<Customer>));
         }
 
-        [Test]
-        public void Passing_null_to_the_ctor_causes_an_exception()
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Passing_null_to_the_ctor_causes_an_exception1()
         {
-            Assert.That(() =>
-            {
-                new GenericTypeCatalog(null);
-            }, Throws.InstanceOf<ArgumentException>());
-
-            Assert.That(() =>
-            {
-                new GenericTypeCatalog(typeof(Service1<Customer>), null);
-            }, Throws.InstanceOf<ArgumentException>());
+            new GenericTypeCatalog(null);
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Passing_null_to_the_ctor_causes_an_exception2()
+        {
+            new GenericTypeCatalog(typeof(Service1<Customer>), null);
+        }
+
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_export_attribute_with_default_contract_name_and_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(Service1<Customer>));
             var parts = typeCatalog.Parts.ToList();
-            
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.First().ContractName,
-                Is.EqualTo(AttributedModelServices.GetContractName(typeof(Service1<Customer>))));
-            Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Service1<Customer>))));
+
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual(AttributedModelServices.GetContractName(typeof(Service1<Customer>)), 
+                    parts[0].ExportDefinitions.First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(Service1<Customer>)), 
+                parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
 
             // Assert other export definitions
-            Assert.That(parts[0].ExportDefinitions.Skip(1).First().ContractName,
-                Is.EqualTo("Foo-Bool"));
-            Assert.That(parts[0].ExportDefinitions.Skip(1).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(bool))));
+            Assert.AreEqual("Foo-Bool", parts[0].ExportDefinitions.Skip(1).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(bool)), 
+                    parts[0].ExportDefinitions.Skip(1).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
 
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().ContractName,
-                Is.EqualTo("Foo-String"));
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(string))));
+            Assert.AreEqual("Foo-String", parts[0].ExportDefinitions.Skip(2).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(string)),
+                    parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
 
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
-                Is.EqualTo("Foo-Method"));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Action))));
+            Assert.AreEqual("Foo-Method", parts[0].ExportDefinitions.Skip(3).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(Action)), 
+                parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_export_attribute_with_a_given_contract_name_and_default_contract_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(Service2<Customer>));
             var parts = typeCatalog.Parts.ToList();
 
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.First().ContractName,
-                Is.EqualTo("contract-name"));
-            Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Service2<Customer>))));
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual("contract-name", parts[0].ExportDefinitions.First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(Service2<Customer>)), 
+                    parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_export_attribute_with_default_contract_name_and_given_contract_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(ServiceImpl1<Customer>), typeof(IService<>));
             var parts = typeCatalog.Parts.ToList();
 
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.First().ContractName,
-                Is.EqualTo(AttributedModelServices.GetContractName(typeof(IService<Customer>))));
-            Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>))));
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual(AttributedModelServices.GetContractName(typeof(IService<Customer>)),
+                parts[0].ExportDefinitions.First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>)), 
+                    parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
 
             // Assert other export definitions
-            Assert.That(parts[0].ExportDefinitions.Skip(1).First().ContractName,
-                Is.EqualTo("Foo-Bool"));
-            Assert.That(parts[0].ExportDefinitions.Skip(1).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(bool))));
+            Assert.AreEqual("Foo-Bool", parts[0].ExportDefinitions.Skip(1).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(bool)), 
+                    parts[0].ExportDefinitions.Skip(1).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
 
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().ContractName,
-                Is.EqualTo("Foo-String"));
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(string))));
+            Assert.AreEqual("Foo-String", parts[0].ExportDefinitions.Skip(2).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(string)), 
+                    parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
 
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
-                Is.EqualTo("Foo-Method"));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Action))));
+            Assert.AreEqual("Foo-Method", parts[0].ExportDefinitions.Skip(3).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(Action)), 
+                    parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_export_attribute_with_a_given_contract_name_and_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(ServiceImpl2<Customer>), typeof(IService<>));
             var parts = typeCatalog.Parts.ToList();
 
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.First().ContractName,
-                Is.EqualTo("contract-name-2"));
-            Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>))));
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual("contract-name-2", parts[0].ExportDefinitions.First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>))
+                    , parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_inherited_export_attribute_with_default_contract_name_and_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(InheritedService1Impl<Customer>), typeof(IInheritedService1<>));
             var parts = typeCatalog.Parts.ToList();
 
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
-                Is.EqualTo(AttributedModelServices.GetContractName(typeof(IInheritedService1<Customer>))));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IInheritedService1<Customer>))));
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual(AttributedModelServices.GetContractName(typeof(IInheritedService1<Customer>))
+                , parts[0].ExportDefinitions.Skip(3).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(IInheritedService1<Customer>)),
+                    parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
+                
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_inherited_export_attribute_with_a_given_contract_name_and_default_contract_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(InheritedService2Impl<Customer>), typeof(IInheritedService2<>));
             var parts = typeCatalog.Parts.ToList();
-
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
-                Is.EqualTo("contract-name"));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IInheritedService2<Customer>))));
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual("contract-name", parts[0].ExportDefinitions.Skip(3).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(IInheritedService2<Customer>)), 
+                parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
         }
 
-        [Test]
+        [TestMethod]
         public void When_querying_for_a_generic_part_exported_by_the_inherited_export_attribute_with_a_given_contract_name_and_type_the_closed_generic_part_is_returned()
         {
             var typeCatalog = new GenericTypeCatalog(typeof(InheritedService3Impl<Customer>), typeof(IService<>));
             var parts = typeCatalog.Parts.ToList();
 
-            Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
-                Is.EqualTo("contract-name-2"));
-            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
-                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>))));
+            Assert.AreEqual(1, parts.Count);
+            Assert.AreEqual("contract-name-2",  parts[0].ExportDefinitions.Skip(3).First().ContractName);
+            Assert.AreEqual(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>)),
+                parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName]);
         }
     }
-    
+
     [Export]
     public class Service1<T>
     {
         [Export("Foo-Method")]
-        public void FooMethod() {}
+        public void FooMethod() { }
 
         [Export("Foo-String")]
         public string FooProperty

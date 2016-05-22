@@ -4,12 +4,12 @@ namespace MefContrib.Hosting.Conventions.Tests
 {
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class ImportConventionTests
     {
-        [Test]
+        [TestMethod]
         public void RequiredMetadata_should_not_be_null_on_new_instance()
         {
             var instance =
@@ -18,7 +18,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             instance.RequiredMetadata.ShouldNotBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_requiredmetadata_is_not_same_on_the_instance_that_is_being_compared_againts()
         {
             var instance =
@@ -43,7 +43,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_contract_is_not_same_on_the_instance_that_is_being_compared_against()
         {
             var instance =
@@ -55,7 +55,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_creation_policy_is_not_same_on_the_instance_that_is_being_compared_against()
         {
             var instance =
@@ -67,7 +67,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_contract_type_is_not_same_on_the_instance_that_is_being_compared_against()
         {
             var instance =
@@ -79,7 +79,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_when_recomposable_is_not_same_on_instance_that_is_being_compared_against()
         {
             var instance =
@@ -91,7 +91,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_false_if_called_with_null()
         {
             var instance =
@@ -103,7 +103,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeFalse();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_true_if_called_with_itself()
         {
             var instance =
@@ -115,7 +115,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.ShouldBeTrue();
         }
 
-        [Test]
+        [TestMethod]
         public void Equals_should_return_true_if_identical_with_instance_that_is_being_compared_against()
         {
             var instance =
