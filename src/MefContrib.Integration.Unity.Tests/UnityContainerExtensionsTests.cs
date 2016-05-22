@@ -3,11 +3,11 @@ using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using MefContrib.Integration.Unity.Extensions;
 using Microsoft.Practices.Unity;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Integration.Unity.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class UnityContainerExtensionsTests
     {
         public interface IMefExposedComponent
@@ -82,7 +82,7 @@ namespace MefContrib.Integration.Unity.Tests
             return container;
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromUnityTest()
         {
             var container = ConfigureUnityThenMef();
@@ -91,7 +91,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.IsNotNull(component);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromUnity2Test()
         {
             var container = ConfigureMefThenUnity();
@@ -100,7 +100,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.IsNotNull(component);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveMefFromUnityTest()
         {
             var container = ConfigureUnityThenMef();
@@ -108,7 +108,7 @@ namespace MefContrib.Integration.Unity.Tests
             var component = container.Resolve<IMefExposedComponent>();
             Assert.IsNotNull(component);
         }
-        [Test]
+        [TestMethod]
         public void ResolveMefFromUnity2Test()
         {
             var container = ConfigureMefThenUnity();
@@ -117,7 +117,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.IsNotNull(component);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByCtorTest()
         {
             var container = ConfigureUnityThenMef();
@@ -130,7 +130,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreNotEqual(unityComponent, component.UnityComponent);
         }
         
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByCtor2Test()
         {
             var container = ConfigureMefThenUnity();
@@ -143,7 +143,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreNotEqual(unityComponent, component.UnityComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByPropTest()
         {
             var container = ConfigureUnityThenMef();
@@ -156,7 +156,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreNotEqual(unityComponent, component.UnityComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByProp2Test()
         {
             var container = ConfigureMefThenUnity();
@@ -169,7 +169,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreNotEqual(unityComponent, component.UnityComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByCtorWithScopeTest()
         {
             IUnityContainer container = ConfigureUnityThenMef();
@@ -184,7 +184,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreEqual(unityComponent, component.UnityComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByCtorWithScope2Test()
         {
             IUnityContainer container = ConfigureMefThenUnity();
@@ -200,7 +200,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreEqual(unityComponent, component.UnityComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByPropWithScopeTest()
         {
             IUnityContainer container = ConfigureUnityThenMef();
@@ -216,7 +216,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreEqual(unityComponent, component.UnityComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void ResolveUnityFromMefByPropWithScope2Test()
         {
             IUnityContainer container = ConfigureMefThenUnity();
@@ -278,7 +278,7 @@ namespace MefContrib.Integration.Unity.Tests
             public int InstanceCount { get { return m_InstanceCount; } }
         }
 
-        [Test]
+        [TestMethod]
         public void UnityInstanceCountTest()
         {
             CountableUnityComponent.ResetInstanceCount();
@@ -287,7 +287,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreEqual(1, countable.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void UnityInstanceCount2Test()
         {
             CountableUnityComponent.ResetInstanceCount();
@@ -296,7 +296,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreEqual(1, countable.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefInstanceCountTest()
         {
             CountableMefComponent.ResetInstanceCount();
@@ -305,7 +305,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.AreEqual(1, countable.InstanceCount);
         }
 
-        [Test]
+        [TestMethod]
         public void MefInstanceCount2Test()
         {
             CountableMefComponent.ResetInstanceCount();
@@ -326,7 +326,7 @@ namespace MefContrib.Integration.Unity.Tests
             public ICountableUnityComponent Component { get; set; }
         }
 
-        [Test]
+        [TestMethod]
         public void UnityInstanceCountDepScopedTest()
         {
             CountableUnityComponent.ResetInstanceCount();

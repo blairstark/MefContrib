@@ -6,11 +6,11 @@ namespace MefContrib.Hosting.Conventions.Tests
 
     using MefContrib.Tests;
 
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class DirectoryTypeScannerTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_when_called_with_null_path()
         {
             var exception =
@@ -19,7 +19,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentoutofrangeexception_when_called_with_empty_path()
         {
             var exception =
@@ -28,7 +28,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_directorynotfoundexception_when_called_with_non_existing_path()
         {
             var exception =
@@ -37,7 +37,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<DirectoryNotFoundException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_persist_path_to_path_property()
         {
             var knownPath =
@@ -49,7 +49,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             scanner.Path.ShouldEqual(knownPath);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_return_public_types_from_all_available_assemblies_in_path()
         {
             var scanner =
@@ -61,7 +61,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_return_empty_enumerable_when_no_assemblies_were_found_in_path()
         {
             var tempDirectoryPath =
@@ -79,7 +79,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.Count().ShouldEqual(0);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_return_types_from_files_with_accepted_extensions()
         {
             var scanner =
@@ -98,7 +98,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             results.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void GetTypes_should_not_return_types_from_files_without_accepted_extension()
         {
             var scanner =

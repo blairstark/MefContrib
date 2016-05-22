@@ -1,11 +1,11 @@
 namespace MefContrib.Hosting.Conventions.Tests
 {
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class CSharpAssemblyFactoryTests
     {
-        [Test]
+        [TestMethod]
         public void Compile_should_return_instance_of_assembly()
         {
             var results =
@@ -16,10 +16,10 @@ namespace MefContrib.Hosting.Conventions.Tests
                         }
                     ");
 
-            Assert.NotNull(results);
+            Assert.IsNotNull(results);
         }
 
-        [Test]
+        [TestMethod]
         public void Compile_should_return_assembly_with_one_public_type()
         {
             var results =

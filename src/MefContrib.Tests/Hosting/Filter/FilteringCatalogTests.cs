@@ -2,14 +2,14 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Filter.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class FilteringCatalogTests
     {
-        public interface IMetadataComponent {}
+        public interface IMetadataComponent { }
 
         [Export(typeof(IMetadataComponent))]
         [PartMetadata("key", "value")]
@@ -22,7 +22,7 @@ namespace MefContrib.Hosting.Filter.Tests
         {
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_are_filtered_based_on_metadata_using_ContainsMetadata_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
@@ -30,11 +30,11 @@ namespace MefContrib.Hosting.Filter.Tests
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<IMetadataComponent>();
 
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(1));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(1, components.Count());
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_are_filtered_using_lambda_expression_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
@@ -44,8 +44,8 @@ namespace MefContrib.Hosting.Filter.Tests
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<IMetadataComponent>();
 
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(1));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(1, components.Count());
         }
 
         public interface ILifetimeComponent
@@ -75,7 +75,7 @@ namespace MefContrib.Hosting.Filter.Tests
         {
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_are_filtered_based_on_shared_lifetime_using_HasCreationPolicy_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
@@ -83,12 +83,12 @@ namespace MefContrib.Hosting.Filter.Tests
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<ILifetimeComponent>();
 
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(1));
-            Assert.That(components.First().Value.GetType(), Is.EqualTo(typeof(LifetimeComponent2)));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(1, components.Count());
+            Assert.IsInstanceOfType(components.First().Value, typeof(LifetimeComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_are_filtered_based_on_nonshared_lifetime_using_HasCreationPolicy_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
@@ -96,12 +96,12 @@ namespace MefContrib.Hosting.Filter.Tests
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<ILifetimeComponent>();
 
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(1));
-            Assert.That(components.First().Value.GetType(), Is.EqualTo(typeof(LifetimeComponent3)));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(1, components.Count());
+            Assert.IsInstanceOfType(components.First().Value, typeof(LifetimeComponent3));
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_are_filtered_based_on_any_lifetime_using_HasCreationPolicy_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
@@ -109,10 +109,10 @@ namespace MefContrib.Hosting.Filter.Tests
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<ILifetimeComponent>();
 
-            Assert.That(components, Is.Not.Null);
-            Assert.That(components.Count(), Is.EqualTo(2));
-            Assert.That(components.Select(t => t.Value).OfType<LifetimeComponent1>().First().GetType(), Is.EqualTo(typeof(LifetimeComponent1)));
-            Assert.That(components.Select(t => t.Value).OfType<LifetimeComponent4>().First().GetType(), Is.EqualTo(typeof(LifetimeComponent4)));
+            Assert.IsNotNull(components);
+            Assert.AreEqual(2, components.Count());
+            Assert.IsInstanceOfType(components.Select(t => t.Value).OfType<LifetimeComponent1>().First(), typeof(LifetimeComponent1));
+            Assert.IsInstanceOfType(components.Select(t => t.Value).OfType<LifetimeComponent4>().First(), typeof(LifetimeComponent4));
         }
 
         [Export]
@@ -172,7 +172,7 @@ namespace MefContrib.Hosting.Filter.Tests
             public bool Disposed { get; private set; }
         }
 
-        [Test]
+        [TestMethod]
         public void Parts_created_by_the_child_container_are_disposed()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
@@ -186,17 +186,17 @@ namespace MefContrib.Hosting.Filter.Tests
             var dep2 = dep1.Dep;
             var dep3 = dep2.Dep;
 
-            Assert.That(root.Disposed, Is.False);
-            Assert.That(dep1.Disposed, Is.False);
-            Assert.That(dep2.Disposed, Is.False);
-            Assert.That(dep3.Disposed, Is.False);
-            
+            Assert.IsFalse(root.Disposed);
+            Assert.IsFalse(dep1.Disposed);
+            Assert.IsFalse(dep2.Disposed);
+            Assert.IsFalse(dep3.Disposed);
+
             child.Dispose();
 
-            Assert.That(root.Disposed, Is.True); // Disposed as it was created by the child container
-            Assert.That(dep1.Disposed, Is.True); // Disposed as it was created by the child container
-            Assert.That(dep2.Disposed, Is.False);
-            Assert.That(dep3.Disposed, Is.False);
+            Assert.IsTrue(root.Disposed); // Disposed as it was created by the child container
+            Assert.IsTrue(dep1.Disposed); // Disposed as it was created by the child container
+            Assert.IsFalse(dep2.Disposed);
+            Assert.IsFalse(dep3.Disposed);
         }
     }
 }

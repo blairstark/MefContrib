@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MefContrib.Hosting.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class FactoryExportProviderTests
     {
         #region Fake External Components
@@ -33,7 +33,7 @@ namespace MefContrib.Hosting.Tests
         public class ExternalComponent3 : IExternalComponent
         {
             public IExternalComponent ExternalComponent { get; set; }
-            
+
             public ExternalComponent3(IExternalComponent externalComponent)
             {
                 ExternalComponent = externalComponent;
@@ -155,13 +155,13 @@ namespace MefContrib.Hosting.Tests
             }
 
             public IExternalComponent Component1 { get; set; }
-            
+
             public IExternalComponent Component2 { get; set; }
         }
 
         #endregion
 
-        [Test]
+        [TestMethod]
         public void Export_provider_can_resolve_service_registered_by_type()
         {
             // Setup
@@ -173,16 +173,16 @@ namespace MefContrib.Hosting.Tests
             provider.Register(typeof(IExternalComponent));
 
             var externalComponent = container.GetExportedValue<IExternalComponent>();
-            Assert.That(externalComponent, Is.Not.Null);
-            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(externalComponent);
+            Assert.IsInstanceOfType(externalComponent, typeof(ExternalComponent1));
 
             var mefComponent = container.GetExportedValue<IMefComponent>();
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
-            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.Component1, typeof(ExternalComponent1));
+            Assert.IsInstanceOfType(mefComponent.Component2, typeof(ExternalComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void Export_provider_can_resolve_service_registered_by_type_and_registration_name()
         {
             // Setup
@@ -194,16 +194,16 @@ namespace MefContrib.Hosting.Tests
             provider.Register(typeof(IExternalComponent), "external2");
 
             var externalComponent = container.GetExportedValue<IExternalComponent>("external2");
-            Assert.That(externalComponent, Is.Not.Null);
-            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent);
+            Assert.IsInstanceOfType(externalComponent, typeof(ExternalComponent2));
 
             var mefComponent = container.GetExportedValue<IMefComponent>("component2");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
-            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.Component1, typeof(ExternalComponent2));
+            Assert.IsInstanceOfType(mefComponent.Component2, typeof(ExternalComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void Export_provider_can_resolve_service_registered_by_type_and_or_registration_name()
         {
             // Setup
@@ -214,14 +214,14 @@ namespace MefContrib.Hosting.Tests
             // Registration
             provider.Register(typeof(IExternalComponent));
             provider.Register(typeof(IExternalComponent), "external2");
-            
+
             var mefComponent = container.GetExportedValue<IMefComponent>("component3");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
-            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.Component1, typeof(ExternalComponent1));
+            Assert.IsInstanceOfType(mefComponent.Component2, typeof(ExternalComponent2));
         }
 
-        [Test]
+        [TestMethod]
         public void Container_can_resolve_services_from_two_factory_export_providers()
         {
             // Setup
@@ -235,14 +235,14 @@ namespace MefContrib.Hosting.Tests
             provider2.Register(typeof(IExternalComponent), "external2");
 
             var mefComponent = container.GetExportedValue<IMefComponent>("component3");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
-            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.Component1, typeof(ExternalComponent1));
+            Assert.IsInstanceOfType(mefComponent.Component2, typeof(ExternalComponent2));
 
             mefComponent = container.GetExportedValue<IMefComponent>("component4");
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
-            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(mefComponent);
+            Assert.IsInstanceOfType(mefComponent.Component1, typeof(ExternalComponent1));
+            Assert.IsInstanceOfType(mefComponent.Component2, typeof(ExternalComponent2));
         }
 
         private static object FactoryMethod1(Type type, string registrationName)
@@ -260,7 +260,7 @@ namespace MefContrib.Hosting.Tests
         {
             if (type == typeof(IExternalComponent) && registrationName == null)
                 return new ExternalComponent1();
-            
+
             return null;
         }
 
@@ -272,56 +272,56 @@ namespace MefContrib.Hosting.Tests
             return null;
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_service_registered_using_factory_method()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var provider = new FactoryExportProvider()
-                .Register(typeof (IExternalComponent), ep => new ExternalComponent1())
-                .Register(typeof (ExternalComponent2), ep => new ExternalComponent2());
+                .Register(typeof(IExternalComponent), ep => new ExternalComponent1())
+                .Register(typeof(ExternalComponent2), ep => new ExternalComponent2());
             var container = new CompositionContainer(assemblyCatalog, provider);
-            
+
             var externalComponent = container.GetExportedValue<IExternalComponent>();
-            Assert.That(externalComponent, Is.Not.Null);
-            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(externalComponent);
+            Assert.IsInstanceOfType(externalComponent, typeof(ExternalComponent1));
 
             var externalComponent2 = container.GetExportedValue<ExternalComponent2>();
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent2));
 
             var mefComponent = container.GetExportedValue<IMefComponent>();
-            Assert.That(mefComponent, Is.Not.Null);
-            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
-            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(mefComponent);
+             Assert.IsInstanceOfType(mefComponent.Component1, typeof(ExternalComponent1));
+            Assert.IsInstanceOfType(mefComponent.Component2, typeof(ExternalComponent1));
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_executes_the_factory_each_time_the_instance_is_requested()
         {
             var count = 0;
 
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new FactoryExportProvider(typeof (ExternalComponent2), ep =>
-            {
-                count++;
-                return new ExternalComponent2();
-            });
+            var provider = new FactoryExportProvider(typeof(ExternalComponent2), ep =>
+           {
+               count++;
+               return new ExternalComponent2();
+           });
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             var externalComponent1 = container.GetExportedValue<ExternalComponent2>();
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent2));
 
             var externalComponent2 = container.GetExportedValue<ExternalComponent2>();
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent2));
 
-            Assert.That(count, Is.EqualTo(2));
+            Assert.AreEqual(2, count);
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_single_instance()
         {
             var count = 0;
@@ -338,18 +338,18 @@ namespace MefContrib.Hosting.Tests
             });
 
             var externalComponent1 = container.GetExportedValue<IExternalComponent>();
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent1));
 
             var externalComponent2 = container.GetExportedValue<IExternalComponent>();
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent1));
 
-            Assert.That(count, Is.EqualTo(1));
-            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+            Assert.AreEqual(1, count);
+            Assert.AreEqual(externalComponent1, externalComponent2);
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_single_instance_registered_using_generic_overload()
         {
             var count = 0;
@@ -366,18 +366,18 @@ namespace MefContrib.Hosting.Tests
             });
 
             var externalComponent1 = container.GetExportedValue<IExternalComponent>();
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent1));
 
             var externalComponent2 = container.GetExportedValue<IExternalComponent>();
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent1));
 
-            Assert.That(count, Is.EqualTo(1));
-            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+            Assert.AreEqual(1, count);
+            Assert.AreEqual(externalComponent1, externalComponent2);
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_single_instance_given_by_registration_name()
         {
             var count = 0;
@@ -386,7 +386,7 @@ namespace MefContrib.Hosting.Tests
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var provider = new FactoryExportProvider();
             var container = new CompositionContainer(assemblyCatalog, provider);
-            
+
             provider.RegisterInstance(typeof(IExternalComponent), "ext2", ep =>
             {
                 count++;
@@ -394,18 +394,18 @@ namespace MefContrib.Hosting.Tests
             });
 
             var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext2");
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent2));
 
             var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext2");
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent2));
 
-            Assert.That(count, Is.EqualTo(1));
-            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+            Assert.AreEqual(1, count);
+            Assert.AreEqual(externalComponent1, externalComponent2);
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_single_instance_given_by_registration_name_registered_using_generic_overload()
         {
             var count = 0;
@@ -423,18 +423,18 @@ namespace MefContrib.Hosting.Tests
             });
 
             var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext2");
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent2));
 
             var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext2");
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent2));
 
-            Assert.That(count, Is.EqualTo(1));
-            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+            Assert.AreEqual(1, count);
+            Assert.AreEqual(externalComponent1, externalComponent2);
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_additional_exports_from_the_factory()
         {
             // Setup
@@ -447,23 +447,23 @@ namespace MefContrib.Hosting.Tests
             provider.Register<IExternalComponent>("ext3", ep => new ExternalComponent3(ep.GetExportedValue<IExternalComponent>()));
 
             var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext3");
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent3)));
-            var externalComponent13 = (ExternalComponent3) externalComponent1;
-            Assert.That(externalComponent13.ExternalComponent, Is.Not.Null);
-            Assert.That(externalComponent13.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent3));
+            var externalComponent13 = (ExternalComponent3)externalComponent1;
+            Assert.IsNotNull(externalComponent13);
+            Assert.IsInstanceOfType(externalComponent13.ExternalComponent, typeof(ExternalComponent2));
 
             var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext3");
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent3)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent3));
             var externalComponent23 = (ExternalComponent3)externalComponent1;
-            Assert.That(externalComponent23.ExternalComponent, Is.Not.Null);
-            Assert.That(externalComponent23.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent23.ExternalComponent);
+            Assert.IsInstanceOfType(externalComponent23.ExternalComponent, typeof(ExternalComponent2));
 
-            Assert.That(externalComponent13.ExternalComponent, Is.SameAs(externalComponent23.ExternalComponent));
+            Assert.AreSame(externalComponent13.ExternalComponent, externalComponent23.ExternalComponent);
         }
 
-        [Test]
+        [TestMethod]
         public void Factory_export_provider_can_resolve_additional_exports_from_the_container()
         {
             // Setup
@@ -478,16 +478,17 @@ namespace MefContrib.Hosting.Tests
             provider.SourceProvider = container;
 
             var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext");
-            Assert.That(externalComponent1, Is.Not.Null);
-            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent4)));
+            Assert.IsNotNull(externalComponent1);
+            Assert.IsInstanceOfType(externalComponent1, typeof(ExternalComponent4));
             var externalComponent14 = (ExternalComponent4)externalComponent1;
-            Assert.That(externalComponent14.ExternalComponent, Is.Not.Null);
-            Assert.That(externalComponent14.MefComponent, Is.Not.Null);
-            Assert.That(externalComponent14.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
-            Assert.That(externalComponent14.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
+            Assert.IsNotNull(externalComponent14.ExternalComponent);
+            Assert.IsNotNull(externalComponent14.MefComponent);
+            Assert.IsInstanceOfType(externalComponent14.ExternalComponent, typeof(ExternalComponent2));
+            Assert.IsInstanceOfType(externalComponent14.MefComponent,typeof(MefComponent1));
         }
 
-        [Test]
+        [TestMethod]
+        [ExpectedException(typeof(ImportCardinalityMismatchException))]
         public void Factory_export_provider_throws_exception_when_resolving_unknown_parts()
         {
             // Setup
@@ -498,15 +499,10 @@ namespace MefContrib.Hosting.Tests
 
             provider.RegisterInstance<IExternalComponent>("ext", ep => new ExternalComponent2());
 
-            
-            Assert.That(delegate
-                        {
-                            container.GetExportedValue<IExternalComponent>();
-                        }, Throws.TypeOf<ImportCardinalityMismatchException>());
-
             var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext");
-            Assert.That(externalComponent2, Is.Not.Null);
-            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.IsNotNull(externalComponent2);
+            Assert.IsInstanceOfType(externalComponent2, typeof(ExternalComponent2));
+            container.GetExportedValue<IExternalComponent>();
         }
     }
 }

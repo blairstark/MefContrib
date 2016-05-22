@@ -5,12 +5,12 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using NUnit.Framework;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class TypeScannerTests
     {
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_when_called_with_null_enumerable()
         {
             var exception =
@@ -19,7 +19,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_should_throw_argumentnullexception_when_called_with_null_expression()
         {
             var exception =
@@ -28,7 +28,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddTypes_should_throw_argumentnullexception_when_called_with_null()
         {
             var scanner =
@@ -40,7 +40,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddTypes_should_throw_argumentnullexception_when_function_evaluates_to_null()
         {
             var scanner =
@@ -52,7 +52,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [TestMethod]
         public void AddTypes_should_extract_types_from_function()
         {
             var assembly =
@@ -72,7 +72,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             types.Count().ShouldEqual(2);
         }
 
-        [Test]
+        [TestMethod]
         public void GetParts_should_return_empty_collection_when_no_types_have_been_loaded()
         {
             var scanner =
@@ -84,7 +84,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             types.Count().ShouldEqual(0);
         }
 
-        [Test]
+        [TestMethod]
         public void GetParts_should_return_emtpy_collection_when_predicate_did_not_match_any_types()
         {
             var scanner =
@@ -96,7 +96,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             types.Count().ShouldEqual(0);
         }
 
-        [Test]
+        [TestMethod]
         public void GetParts_should_throw_argumentnullexception_when_called_with_null()
         {
             var scanner =
